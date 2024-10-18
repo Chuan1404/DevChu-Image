@@ -17,6 +17,6 @@ export interface IFileUploaded {
   user: IUser;
   status: EModelStatus;
   fileType: EFileType;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

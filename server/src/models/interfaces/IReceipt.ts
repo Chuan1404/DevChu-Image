@@ -12,6 +12,6 @@ export interface IReceipt {
   status: EModelStatus;
   user: IUser;
   file: IFileUploaded;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

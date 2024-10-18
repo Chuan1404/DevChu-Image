@@ -16,8 +16,8 @@ export type FileUploaded = {
   status: EModelStatus;
   fileType: EFileType;
 
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type FileUploadedCreateDTO = {

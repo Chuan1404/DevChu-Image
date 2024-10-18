@@ -1,17 +1,24 @@
 import mongoose from "mongoose";
 import { EModelStatus } from "../enums";
 import { PagingDTO } from "../types";
-import {
-  IRepository
-} from "../interfaces/IRepository";
+import { IRepository } from "../interfaces/IRepository";
 
 export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 {
   constructor(private readonly modelName: string) {}
+
+  async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
+    let data = await mongoose.models[this.modelName].findOne(cond as any);
+    if (!data) {
+      return null;
+    }
+
+    return data;
+  }
+
   async find(id: string): Promise<Entity | null> {
     let data = await mongoose.models[this.modelName].findOne({ id });
-    console.log({data})
     if (!data) {
       return null;
     }
@@ -21,14 +28,14 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
   async findAll(cond: EntityCondDTO, paging: PagingDTO): Promise<Entity[]> {
     const { page, limit } = paging;
-    const condSQL = { ...cond, status: { $eq: EModelStatus.ACTIVE } };
+    const condSQL = { ...cond, status: { $ne: EModelStatus.DELETED } };
 
-    let data = await mongoose.models[this.modelName]
+    const rows = await mongoose.models[this.modelName]
       .find(condSQL)
       .limit(limit)
       .skip((page - 1) * limit);
 
-    return data;
+    return rows;
   }
 
   async create(data: Entity): Promise<boolean> {
@@ -36,13 +43,11 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
     return true;
   }
-
   async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
     await mongoose.models[this.modelName].updateOne({ id }, data as any);
     return true;
   }
-  
-  async delete(id: string, isHard: boolean): Promise<boolean> {
+  async delete(id: string, isHard: boolean = false): Promise<boolean> {
     if (isHard) {
       await mongoose.models[this.modelName].deleteOne({ id });
     } else {

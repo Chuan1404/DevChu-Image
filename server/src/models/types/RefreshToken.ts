@@ -8,8 +8,8 @@ export type RefreshToken = {
 
   userId: string;
 
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type RefreshTokenCreateDTO = {

@@ -9,6 +9,6 @@ export interface IRefreshToken {
   expireDate: Date;
   status: EModelStatus;
   user: IUser;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

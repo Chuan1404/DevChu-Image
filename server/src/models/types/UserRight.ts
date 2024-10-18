@@ -5,8 +5,8 @@ export type UserRight = {
   expireDate: Date;
   fileId: string;
   userId: string;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
   status: EModelStatus;
 };
 

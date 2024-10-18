@@ -5,8 +5,8 @@ export type VertificationCode = {
   value: string;
   userId: string;
   status: EModelStatus;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type VertificationCodeCreateDTO = {

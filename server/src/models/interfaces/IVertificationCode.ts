@@ -8,6 +8,6 @@ export type IVertificationCode = {
   value: string;
   user: IUser;
   status: EModelStatus;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

@@ -10,6 +10,6 @@ export interface IComment {
   user: IUser;
   file: IFileUploaded;
   status: EModelStatus;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

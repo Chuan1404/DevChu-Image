@@ -10,8 +10,8 @@ export type Receipt = {
   userId: string;
   fileId: string;
 
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type ReceiptCreateDTO = {

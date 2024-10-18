@@ -4,8 +4,8 @@ export type Tag = {
   id: string;
   name: string;
   status: EModelStatus;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type TagCreateDTO = {

@@ -11,6 +11,6 @@ export interface IUser {
   status: EModelStatus;
   accountStatus: EAccountStatus;
   role: EUserRole;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

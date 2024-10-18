@@ -7,6 +7,6 @@ export interface ITag {
   id: string;
   name: string;
   status: EModelStatus;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

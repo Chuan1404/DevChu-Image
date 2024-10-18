@@ -10,6 +10,6 @@ export interface IUserRight {
   file: IFileUploaded;
   user: IUser;
   status: EModelStatus;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
