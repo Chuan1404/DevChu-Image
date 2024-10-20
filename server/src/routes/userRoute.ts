@@ -1,5 +1,6 @@
 import express from "express";
 import { UserController } from "../controllers/UserController";
+import { authToken } from "../middleware/OAuth2";
 import { modelName } from "../models/interfaces/IUser";
 import { UserRepository } from "../repositories/UserRepository";
 import { UserService } from "../services/UserService";
@@ -11,6 +12,7 @@ const userService = new UserService(userRepository, hashPassword);
 const userController = new UserController(userService);
 const userRouter = express.Router();
 
+userRouter.use(authToken);
 userRouter.get("/", userController.findAll.bind(userController));
 userRouter.get("/:id", userController.find.bind(userController));
 userRouter.post("/", userController.create.bind(userController));

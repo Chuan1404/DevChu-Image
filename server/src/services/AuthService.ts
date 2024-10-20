@@ -23,6 +23,7 @@ import {
 } from "../share/errors";
 import { IComparePassword } from "../share/interfaces/IComparePassword";
 import { IHashPassword } from "../share/interfaces/IHashPassword";
+import { ZodError } from "zod";
 
 export default class AuthService implements IAuthService {
   constructor(
@@ -111,6 +112,8 @@ export default class AuthService implements IAuthService {
 
   async login(data: AuthLoginDTO): Promise<Auth | null> {
     let { success, data: parsedData, error } = AuthLoginSchema.safeParse(data);
+
+    console.log((error as ZodError).issues)
 
     if (!success) {
       console.log(error);
