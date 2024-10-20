@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { IUserService } from "../../services/interfaces/IUserService";
-import { UserCondSchema } from "../../models/types/User";
-import { PagingSchema } from "../../share/types";
+import { IUserService } from "../services/interfaces/IUserService";
+import { UserCondSchema } from "../models/types/User";
+import { PagingSchema } from "../share/types";
 
 export class UserController {
   constructor(private readonly service: IUserService) {}
@@ -11,7 +11,6 @@ export class UserController {
       const result = await this.service.create(req.body);
       res.status(201).json({ data: result });
     } catch (error) {
-      console.log(error);
       res.status(400).json({ error: (error as Error).message });
     }
   }
@@ -19,10 +18,10 @@ export class UserController {
   async find(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      let User = await this.service.find(id);
+      let data = await this.service.find(id);
 
       res.status(200).json({
-        data: User,
+        data,
       });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });

@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { IUser, modelName } from "../interfaces/IUser";
 import { EAccountStatus, EModelStatus, EUserRole } from "../../share/enums";
 
-export default function init() {
+export default function initUser() {
   const UserSchema = new Schema<IUser>(
     {
       id: {

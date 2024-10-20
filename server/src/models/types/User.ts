@@ -22,7 +22,7 @@ export const UserCreateSchema = z.object({
   email: z.string(),
   password: z.string(),
   name: z.string(),
-  avatar: z.string(),
+  // avatar: z.string(),
 });
 
 export const UserUpdateSchema = z.object({

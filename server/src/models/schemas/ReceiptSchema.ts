@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { EModelStatus, EPaymentMethod } from "../../share/enums";
 import { IReceipt, modelName } from "../interfaces/IReceipt";
 
-export default function init() {
+export default function initReceipt() {
   const ReceiptSchema = new Schema<IReceipt>(
     {
       id: {

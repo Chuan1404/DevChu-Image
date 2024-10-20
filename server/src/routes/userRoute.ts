@@ -1,12 +1,9 @@
 import express from "express";
-import { UserController } from "../controllers/express/UserController";
+import { UserController } from "../controllers/UserController";
+import { modelName } from "../models/interfaces/IUser";
 import { UserRepository } from "../repositories/UserRepository";
 import { UserService } from "../services/UserService";
-import { modelName } from "../models/interfaces/IUser";
-import init from "../models/schemas/UserSchema";
 import { HashPassword } from "../share/components/password";
-
-init();
 
 const hashPassword = new HashPassword();
 const userRepository = new UserRepository(modelName);

@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { EModelStatus } from "../../share/enums";
 import { ITag, modelName } from "../interfaces/ITag";
 
-export default function init() {
+export default function initTag() {
   const TagSchema = new Schema<ITag>(
     {
       id: {

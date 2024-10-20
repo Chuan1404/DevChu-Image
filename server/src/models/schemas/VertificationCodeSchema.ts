@@ -5,7 +5,7 @@ import {
   modelName,
 } from "../interfaces/IVertificationCode";
 
-export default function init() {
+export default function initVertificationCode() {
   const VertificationCodeSchema = new Schema<IVertificationCode>(
     {
       id: {

@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { EModelStatus } from "../../share/enums";
 import { IComment, modelName } from "../interfaces/IComment";
 
-export default function init() {
+export default function initComment() {
   const CommentSchema = new Schema<IComment>(
     {
       id: {

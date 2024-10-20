@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { config } from "dotenv";
+import init from "../models/schemas";
 
 config();
 
@@ -11,6 +12,7 @@ const database = {
       .connect(`mongodb://${server}/${databaseName}`)
       .then(() => {
         console.log("Connect database success");
+        init();
       })
       .catch(() => {
         console.log("Fail to connect database");

@@ -64,6 +64,7 @@ export class UserService implements IUserService {
 
     return newId;
   }
+  
   async update(id: string, data: UserUpdateDTO): Promise<boolean> {
     const {
       success,

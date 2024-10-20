@@ -2,8 +2,8 @@ import mongoose, { Schema } from "mongoose";
 import { EModelStatus } from "../../share/enums";
 import { IRefreshToken, modelName } from "../interfaces/IRefreshToken";
 
-export default function init() {
-  const RefreshTokenSchema = new Schema<IRefreshToken>(
+export default function initRefreshToken() {
+  const refreshTokenSchema = new Schema<IRefreshToken>(
     {
       id: {
         type: String,
@@ -29,5 +29,5 @@ export default function init() {
     { timestamps: true }
   );
 
-  mongoose.model<IRefreshToken>(modelName, RefreshTokenSchema);
+  mongoose.model<IRefreshToken>(modelName, refreshTokenSchema);
 }

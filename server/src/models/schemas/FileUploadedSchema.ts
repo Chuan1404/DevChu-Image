@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { EFileType, EModelStatus } from "../../share/enums";
 import { IFileUploaded, modelName } from "../interfaces/IFileUploaded";
 
-export default function init() {
+export default function initFileUploaded() {
   const FileUploadedSchema = new Schema<IFileUploaded>(
     {
       id: {
