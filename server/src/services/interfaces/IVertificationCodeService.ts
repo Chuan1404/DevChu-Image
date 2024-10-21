@@ -1,15 +1,15 @@
 import {
-  VertificationCode,
-  VertificationCodeCondDTO,
-  VertificationCodeCreateDTO,
-  VertificationCodeUpdateDTO,
-} from "../../models/types/VertificationCode";
+  VerificationCode,
+  VerificationCodeCondDTO,
+  VerificationCodeUpdateDTO,
+  VerificationCodeCreateDTO
+} from "../../models/types/VerificationCode";
 import { IService } from "../../share/interfaces/IService";
 
-export interface IVertificationCodeService
+export interface IVerificationCodeService
   extends IService<
-    VertificationCode,
-    VertificationCodeCondDTO,
-    VertificationCodeCreateDTO,
-    VertificationCodeUpdateDTO
+    VerificationCode,
+    VerificationCodeCondDTO,
+    VerificationCodeCreateDTO,
+    VerificationCodeUpdateDTO
   > {}

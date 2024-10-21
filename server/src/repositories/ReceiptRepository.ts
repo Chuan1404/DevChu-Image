@@ -1,3 +1,4 @@
+import { modelName } from "../models/interfaces/IReceipt";
 import {
   Receipt,
   ReceiptCondDTO,
@@ -9,4 +10,8 @@ export class ReceiptRepository extends MongoRepository<
   Receipt,
   ReceiptCondDTO,
   ReceiptUpdateDTO
-> {}
+> {
+  constructor() {
+    super(modelName);
+  }
+}

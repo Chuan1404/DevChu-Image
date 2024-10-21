@@ -1,23 +1,30 @@
+import { z } from "zod";
 import { EModelStatus } from "../../share/enums";
 
-export type Tag = {
-  id: string;
-  name: string;
-  status: EModelStatus;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export const TagSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  status: z.nativeEnum(EModelStatus),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
 
-export type TagCreateDTO = {
-  name: string;
-};
+export const TagCreateSchema = z.object({
+  name: z.string(),
+  status: z.nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
+});
 
-export type TagUpdateDTO = {
-  name?: string;
-  status?: EModelStatus;
-};
+export const TagUpdateSchema = z.object({
+  name: z.string().optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
+});
 
-export type TagCondDTO = {
-  name?: string;
-  status?: EModelStatus;
-};
+export const TagCondSchema = z.object({
+  name: z.string().optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
+});
+
+export type Tag = z.infer<typeof TagSchema>;
+export type TagCreateDTO = z.infer<typeof TagCreateSchema>;
+export type TagUpdateDTO = z.infer<typeof TagUpdateSchema>;
+export type TagCondDTO = z.infer<typeof TagCondSchema>;

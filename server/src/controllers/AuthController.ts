@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { IAuthService } from "../services/interfaces/IAuthService";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export default class AuthController {
-  constructor(private readonly service: IAuthService) {}
+  constructor(@inject("IAuthService") private readonly service: IAuthService) {}
 
   async register(req: Request, res: Response) {
     try {
-      const result = await this.service.register(req.body);
-      res.status(201).json({ data: result });
+      let response = await this.service.register(req.body);
+      res.status(201).json({ data: response });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
     }

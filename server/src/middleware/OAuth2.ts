@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { AuthPayloadSchema, AuthSchema } from "../models/types/Auth";
 import { EUserRole } from "../share/enums";
+import { ErrUnAuthentication } from "../share/errors";
 
 export function authToken(req: Request, res: Response, next: NextFunction) {
   let accessToken: string = process.env.ACCESS_TOKEN_SECRET || "accessToken";
@@ -20,7 +21,7 @@ export function authToken(req: Request, res: Response, next: NextFunction) {
   jwt.verify(token, accessToken, (err, data) => {
     if (err) {
       res.status(401).json({
-        error: "Unauthorize",
+        error: ErrUnAuthentication.message,
       });
       return;
     }
@@ -28,7 +29,7 @@ export function authToken(req: Request, res: Response, next: NextFunction) {
 
     if (!success) {
       res.status(401).json({
-        error: "Unauthorize",
+        error: ErrUnAuthentication.message,
       });
       return;
     }

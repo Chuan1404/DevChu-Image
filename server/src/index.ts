@@ -1,18 +1,21 @@
-import express from "express";
-import database from "./configs/database";
+import "reflect-metadata";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { config } from "dotenv";
+import express from "express";
+
+import database from "./configs/database";
 import router from "./routes";
+import setupDI from "./DI";
 
 const PORT = process.env.PORT || 8080;
 
 const app = express();
 
+config();
+setupDI();
 (async () => {
-  // configs
-  config();
-  database.connect();
+  await database.connect();
 
   // middleware
   app.use(cors());

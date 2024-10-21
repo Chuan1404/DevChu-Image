@@ -1,3 +1,4 @@
+import initComment from "./CommentSchema";
 import initFileUploaded from "./FileUploadedSchema";
 import initReceipt from "./ReceiptSchema";
 import initRefreshToken from "./RefreshTokenSchema";
@@ -9,6 +10,7 @@ import initVertificationCode from "./VertificationCodeSchema";
 export default function init() {
   initUser();
   initFileUploaded();
+  initComment();
   initReceipt();
   initRefreshToken();
   initTag();

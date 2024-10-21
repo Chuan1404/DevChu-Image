@@ -1,3 +1,4 @@
+import { modelName } from "../models/interfaces/IUserRight";
 import {
     UserRight,
     UserRightCondDTO,
@@ -9,5 +10,9 @@ import {
     UserRight,
     UserRightCondDTO,
     UserRightUpdateDTO
-  > {}
+  > {
+    constructor() {
+      super(modelName);
+    }
+  }
   

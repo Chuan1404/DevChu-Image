@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import {
   User,
   UserCondDTO,
@@ -19,10 +20,11 @@ import { PagingDTO } from "../share/types";
 import { IUserService } from "./interfaces/IUserService";
 import { v7 } from "uuid";
 
+@injectable()
 export class UserService implements IUserService {
   constructor(
-    private readonly repository: IUserRepository,
-    private readonly passwordHasher: IHashPassword
+    @inject("IUserRepository") private readonly repository: IUserRepository,
+    @inject("IHashPassword") private readonly passwordHasher: IHashPassword
   ) {}
 
   async create(data: UserCreateDTO): Promise<string> {

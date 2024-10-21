@@ -3,7 +3,7 @@ import { EModelStatus } from "../../share/enums";
 import {
   IVertificationCode,
   modelName,
-} from "../interfaces/IVertificationCode";
+} from "../interfaces/IVerificationCode";
 
 export default function initVertificationCode() {
   const VertificationCodeSchema = new Schema<IVertificationCode>(

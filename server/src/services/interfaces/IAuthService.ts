@@ -6,7 +6,7 @@ import {
 } from "../../models/types/Auth";
 
 export interface IAuthService {
-  register(data: AuthRegisterDTO): Promise<Auth | null>;
+  register(data: AuthRegisterDTO): Promise<string>;
   login(data: AuthLoginDTO): Promise<Auth | null>;
   refreshToken(data: AuthRefreshTokenDTO): Promise<Auth | null>;
 }

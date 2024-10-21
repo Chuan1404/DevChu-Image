@@ -2,9 +2,12 @@ import { Request, Response } from "express";
 import { IUserService } from "../services/interfaces/IUserService";
 import { UserCondSchema } from "../models/types/User";
 import { PagingSchema } from "../share/types";
+import { ErrUnAuthentication } from "../share/errors";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class UserController {
-  constructor(private readonly service: IUserService) {}
+  constructor(@inject("IUserService") private readonly service: IUserService) {}
 
   async create(req: Request, res: Response) {
     try {
@@ -19,6 +22,25 @@ export class UserController {
     const { id } = req.params;
     try {
       let data = await this.service.find(id);
+
+      res.status(200).json({
+        data,
+      });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async getInfo(req: Request, res: Response) {
+    try {
+      const userId = req.userId;
+
+      if (!userId) {
+        res.status(401).json({ error: ErrUnAuthentication.message });
+        return;
+      }
+
+      let data = await this.service.find(userId);
 
       res.status(200).json({
         data,

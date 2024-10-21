@@ -1,3 +1,4 @@
+import { modelName } from "../models/interfaces/IFileUploaded";
 import {
   FileUploaded,
   FileUploadedCondDTO,
@@ -9,4 +10,8 @@ export class FileUploadedRepository extends MongoRepository<
   FileUploaded,
   FileUploadedCondDTO,
   FileUploadedUpdateDTO
-> {}
+> {
+  constructor() {
+    super(modelName);
+  }
+}

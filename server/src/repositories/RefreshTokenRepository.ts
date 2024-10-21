@@ -1,3 +1,4 @@
+import { modelName } from "../models/interfaces/IRefreshToken";
 import {
   RefreshToken,
   RefreshTokenCondDTO,
@@ -9,4 +10,8 @@ export class RefreshTokenRepository extends MongoRepository<
   RefreshToken,
   RefreshTokenCondDTO,
   RefreshTokenUpdateDTO
-> {}
+> {
+  constructor() {
+    super(modelName);
+  }
+}

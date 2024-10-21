@@ -29,7 +29,7 @@ export const CommentCondSchema = z.object({
   content: z.string().optional(),
   userId: z.string().optional(),
   fileId: z.string().optional(),
-  status: z.nativeEnum(EModelStatus),
+  status: z.nativeEnum(EModelStatus).optional(),
 });
 
 export type Comment = z.infer<typeof CommentSchema>;

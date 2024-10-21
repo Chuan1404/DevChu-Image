@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { EModelStatus } from "../enums";
-import { PagingDTO } from "../types";
 import { IRepository } from "../interfaces/IRepository";
+import { PagingDTO } from "../types";
 
 export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
