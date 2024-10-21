@@ -16,7 +16,7 @@ export default function initRefreshToken() {
       expireDate: {
         type: Date,
       },
-      user: {
+      userId: {
         type: String,
         ref: "User",
       },

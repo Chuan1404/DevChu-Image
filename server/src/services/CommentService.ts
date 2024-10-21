@@ -1,4 +1,4 @@
-import { inject, injectable, registry } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { v7 } from "uuid";
 import {
   Comment,
@@ -11,25 +11,19 @@ import {
 } from "../models/types/Comment";
 import { ICommentRepository } from "../repositories/interfaces/ICommentRepository";
 import { EModelStatus } from "../share/enums";
-import {
-  ErrDataInvalid,
-  ErrDataNotFound
-} from "../share/errors";
+import { ErrDataInvalid, ErrDataNotFound } from "../share/errors";
 import { PagingDTO } from "../share/types";
 import { ICommentService } from "./interfaces/ICommentService";
 
 @injectable()
 export class CommentService implements ICommentService {
-  constructor(@inject("ICommentRepository") private readonly repository: ICommentRepository) {
-    console.log('CommentRepository injected:', repository);
-  }
+  constructor(
+    @inject("ICommentRepository")
+    private readonly repository: ICommentRepository
+  ) {}
 
   async create(data: CommentCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = CommentCreateSchema.safeParse(data);
+    const { success, data: parsedData } = CommentCreateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
@@ -52,11 +46,7 @@ export class CommentService implements ICommentService {
   }
 
   async update(id: string, data: CommentUpdateDTO): Promise<boolean> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = CommentUpdateSchema.safeParse(data);
+    const { success, data: parsedData } = CommentUpdateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;

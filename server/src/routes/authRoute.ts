@@ -7,6 +7,11 @@ export default function setupAuthRoute() {
 
   const authRouter = express.Router();
 
+  authRouter.get(
+    "/verify/:code",
+    authController.verifyUser.bind(authController)
+  );
+
   authRouter.post("/register", authController.register.bind(authController));
   authRouter.post("/sign-in", authController.login.bind(authController));
   authRouter.post(

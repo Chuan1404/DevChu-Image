@@ -1,9 +1,9 @@
 import { container } from "tsyringe";
-import { IFileUploadedRepository } from "../repositories/interfaces/IFileUploadedRepository";
-import { IFileUploadedService } from "../services/interfaces/IFileUploadedService";
-import { FileUploadedRepository } from "../repositories/FileUploadedRepository";
-import { FileUploadedService } from "../services/FileUploadedService";
-import { FileUploadedController } from "../controllers/FileUploadedController";
+import { IFileUploadedRepository } from "../../repositories/interfaces/IFileUploadedRepository";
+import { IFileUploadedService } from "../../services/interfaces/IFileUploadedService";
+import { FileUploadedRepository } from "../../repositories/FileUploadedRepository";
+import { FileUploadedService } from "../../services/FileUploadedService";
+import { FileUploadedController } from "../../controllers/FileUploadedController";
 
 export default function setupFileUploadedDI() {
     container.register<IFileUploadedRepository>("IFileUploadedRepository", {

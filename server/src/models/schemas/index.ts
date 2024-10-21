@@ -5,7 +5,7 @@ import initRefreshToken from "./RefreshTokenSchema";
 import initTag from "./TagSchema";
 import initUserRight from "./UserRightSchema";
 import initUser from "./UserSchema";
-import initVertificationCode from "./VertificationCodeSchema";
+import initVertificationCode from "./VerificationCodeSchema";
 
 export default function init() {
   initUser();

@@ -37,7 +37,7 @@ export default function initFileUploaded() {
       size: {
         type: Number,
       },
-      user: {
+      userId: {
         type: String,
         ref: "User",
       },

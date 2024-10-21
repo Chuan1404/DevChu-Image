@@ -1,22 +1,29 @@
-
 import { v7 } from "uuid";
-import { VerificationCode, VerificationCodeCondDTO, VerificationCodeCreateDTO, VerificationCodeCreateSchema, VerificationCodeSchema, VerificationCodeUpdateDTO, VerificationCodeUpdateSchema } from "../models/types/VerificationCode";
+import {
+  VerificationCode,
+  VerificationCodeCondDTO,
+  VerificationCodeCreateDTO,
+  VerificationCodeCreateSchema,
+  VerificationCodeSchema,
+  VerificationCodeUpdateDTO,
+  VerificationCodeUpdateSchema,
+} from "../models/types/VerificationCode";
 import { IVerificationCodeRepository } from "../repositories/interfaces/IVerificationCodeRepository";
 import { EModelStatus } from "../share/enums";
-import { ErrDataExisted, ErrDataInvalid, ErrDataNotFound } from "../share/errors";
+import {
+  ErrDataExisted,
+  ErrDataInvalid,
+  ErrDataNotFound,
+} from "../share/errors";
 import { PagingDTO } from "../share/types";
-import { IVerificationCodeService } from "./interfaces/IVertificationCodeService";
+import { IVerificationCodeService } from "./interfaces/IVerificationCodeService";
 
 export class VerificationCodeService implements IVerificationCodeService {
-
   constructor(private readonly repository: IVerificationCodeRepository) {}
 
   async create(data: VerificationCodeCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = VerificationCodeCreateSchema.safeParse(data);
+    const { success, data: parsedData } =
+      VerificationCodeCreateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
@@ -46,11 +53,8 @@ export class VerificationCodeService implements IVerificationCodeService {
   }
 
   async update(id: string, data: VerificationCodeUpdateDTO): Promise<boolean> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = VerificationCodeUpdateSchema.safeParse(data);
+    const { success, data: parsedData } =
+      VerificationCodeUpdateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;

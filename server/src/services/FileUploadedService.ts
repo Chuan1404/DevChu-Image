@@ -27,11 +27,8 @@ export class FileUploadedService implements IFileUploadedService {
   ) {}
 
   async create(data: FileUploadedCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = FileUploadedCreateSchema.safeParse(data);
+    const { success, data: parsedData } =
+      FileUploadedCreateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
@@ -70,11 +67,8 @@ export class FileUploadedService implements IFileUploadedService {
   }
 
   async update(id: string, data: FileUploadedUpdateDTO): Promise<boolean> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = FileUploadedUpdateSchema.safeParse(data);
+    const { success, data: parsedData } =
+      FileUploadedUpdateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;

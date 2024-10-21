@@ -15,11 +15,11 @@ export default function initComment() {
         required: true,
       },
 
-      user: {
+      userId: {
         type: String,
         ref: "User",
       },
-      file: {
+      fileId: {
         type: String,
         ref: "FileUploaded",
       },

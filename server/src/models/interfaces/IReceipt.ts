@@ -10,8 +10,8 @@ export interface IReceipt {
   method: EPaymentMethod;
   methodId?: string;
   status: EModelStatus;
-  user: IUser;
-  file: IFileUploaded;
+  userId: IUser;
+  fileId: IFileUploaded;
   createdAt: Date;
   updatedAt: Date;
 };

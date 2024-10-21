@@ -10,6 +10,7 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
   async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
     let data = await mongoose.models[this.modelName].findOne(cond as any);
+
     if (!data) {
       return null;
     }
@@ -19,6 +20,7 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
   async find(id: string): Promise<Entity | null> {
     let data = await mongoose.models[this.modelName].findOne({ id });
+
     if (!data) {
       return null;
     }
@@ -43,10 +45,12 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
     return true;
   }
+
   async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
     await mongoose.models[this.modelName].updateOne({ id }, data as any);
     return true;
   }
+
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     if (isHard) {
       await mongoose.models[this.modelName].deleteOne({ id });

@@ -1,12 +1,12 @@
 import { Transporter } from "nodemailer";
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { mailTransporter } from "../configs/transporter";
-import { IMailService } from "../services/interfaces/IMailService";
-import { MailService } from "../services/MailService";
-import { ComparePassword, HashPassword } from "../share/components/password";
-import { IComparePassword } from "../share/interfaces/IComparePassword";
-import { IHashPassword } from "../share/interfaces/IHashPassword";
+import { mailTransporter } from "../transporter";
+import { IMailService } from "../../services/interfaces/IMailService";
+import { MailService } from "../../services/MailService";
+import { ComparePassword, HashPassword } from "../../share/components/password";
+import { IComparePassword } from "../../share/interfaces/IComparePassword";
+import { IHashPassword } from "../../share/interfaces/IHashPassword";
 import setupAuthDI from "./authDI";
 import setupCommentDI from "./commentDI";
 import setupFileUploadedDI from "./fileUploadedDI";

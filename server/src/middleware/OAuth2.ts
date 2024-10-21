@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { AuthPayloadSchema, AuthSchema } from "../models/types/Auth";
+import { AuthPayloadSchema } from "../models/types/Auth";
 import { EUserRole } from "../share/enums";
 import { ErrUnAuthentication } from "../share/errors";
 

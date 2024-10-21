@@ -14,7 +14,7 @@ export interface IFileUploaded {
   size: number;
   width: number;
   height: number;
-  user: IUser;
+  userId: IUser;
   status: EModelStatus;
   fileType: EFileType;
   createdAt: Date;

@@ -7,8 +7,8 @@ export const modelName = "Comment"
 export interface IComment {
   id: string;
   content: string;
-  user: IUser;
-  file: IFileUploaded;
+  userId: IUser;
+  fileId: IFileUploaded;
   status: EModelStatus;
   createdAt: Date;
   updatedAt: Date;

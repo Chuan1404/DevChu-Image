@@ -1,13 +1,13 @@
 import { EModelStatus } from "../../share/enums";
 import { IUser } from "./IUser";
 
-export const modelName = "VertificationCode"
+export const modelName = "VerificationCode";
 
-export type IVertificationCode = {
+export interface IVerificationCode {
   id: string;
   value: string;
-  user: IUser;
+  userId: IUser;
   status: EModelStatus;
   createdAt: Date;
   updatedAt: Date;
-};
+}

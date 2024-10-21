@@ -1,12 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 import { EModelStatus } from "../../share/enums";
 import {
-  IVertificationCode,
+  IVerificationCode,
   modelName,
 } from "../interfaces/IVerificationCode";
 
-export default function initVertificationCode() {
-  const VertificationCodeSchema = new Schema<IVertificationCode>(
+export default function initVerificationCode() {
+  const VerificationCodeSchema = new Schema<IVerificationCode>(
     {
       id: {
         type: String,
@@ -16,7 +16,7 @@ export default function initVertificationCode() {
       value: {
         type: String,
       },
-      user: {
+      userId: {
         type: String,
         ref: "User",
       },
@@ -30,5 +30,5 @@ export default function initVertificationCode() {
     { timestamps: true }
   );
 
-  mongoose.model<IVertificationCode>(modelName, VertificationCodeSchema);
+  mongoose.model<IVerificationCode>(modelName, VerificationCodeSchema);
 }

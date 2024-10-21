@@ -7,8 +7,8 @@ export const modelName = "UserRight"
 export interface IUserRight {
   id: string;
   expireDate: Date;
-  file: IFileUploaded;
-  user: IUser;
+  fileId: IFileUploaded;
+  userId: IUser;
   status: EModelStatus;
   createdAt: Date;
   updatedAt: Date;

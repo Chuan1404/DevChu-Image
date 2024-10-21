@@ -6,7 +6,7 @@ import express from "express";
 
 import database from "./configs/database";
 import router from "./routes";
-import setupDI from "./DI";
+import setupDI from "./configs/DI";
 
 const PORT = process.env.PORT || 8080;
 
@@ -15,7 +15,7 @@ const app = express();
 config();
 setupDI();
 (async () => {
-  await database.connect();
+  database.connect();
 
   // middleware
   app.use(cors());

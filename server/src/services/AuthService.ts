@@ -37,10 +37,13 @@ import { IMailService } from "./interfaces/IMailService";
 export default class AuthService implements IAuthService {
   constructor(
     @inject("IUserRepository") private readonly userRepository: IUserRepository,
-    @inject("IRefreshTokenRepository") private readonly refreshTokenRepository: IRefreshTokenRepository,
-    @inject("IVerificationCodeRepository") private readonly verificationCodeRepository: IVerificationCodeRepository,
+    @inject("IRefreshTokenRepository")
+    private readonly refreshTokenRepository: IRefreshTokenRepository,
+    @inject("IVerificationCodeRepository")
+    private readonly verificationCodeRepository: IVerificationCodeRepository,
     @inject("IHashPassword") private readonly hashPassword: IHashPassword,
-    @inject("IComparePassword") private readonly comparePassword: IComparePassword,
+    @inject("IComparePassword")
+    private readonly comparePassword: IComparePassword,
     @inject("IMailService") private readonly mailService: IMailService
   ) {}
 
@@ -103,7 +106,7 @@ export default class AuthService implements IAuthService {
         .replace("[[name]]", parsedData.name)
         .replace(
           "[[URL]]",
-          `${process.env.HOST}/auth/vertify?code=${verificationCodeValue}`
+          `${process.env.HOST}/auth/verify/${verificationCodeValue}`
         ),
     };
 
@@ -112,18 +115,16 @@ export default class AuthService implements IAuthService {
   }
 
   async login(data: AuthLoginDTO): Promise<Auth | null> {
-    let { success, data: parsedData, error } = AuthLoginSchema.safeParse(data);
+    let { success, data: parsedData } = AuthLoginSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
     }
 
-    console.log(this.userRepository)
     const user = await this.userRepository.findByCond({
       email: parsedData?.email,
       role: parsedData?.role,
     });
-    console.log(user)
 
     if (!user) {
       throw ErrLoginFail;
@@ -185,11 +186,8 @@ export default class AuthService implements IAuthService {
   }
 
   async refreshToken(data: AuthRefreshTokenDTO): Promise<Auth | null> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = AuthRefreshTokenSchema.safeParse(data);
+    const { success, data: parsedData } =
+      AuthRefreshTokenSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
@@ -233,5 +231,19 @@ export default class AuthService implements IAuthService {
       accessToken,
       refreshToken: token,
     };
+  }
+
+  async verifyUser(code: string): Promise<boolean> {
+    const verificationCode = await this.verificationCodeRepository.find(code);
+    if (verificationCode) {
+      await this.userRepository.update(verificationCode.userId, {
+        accountStatus: EAccountStatus.VERIFIED,
+      });
+
+      this.verificationCodeRepository.delete(verificationCode.id, true);
+      return true;
+    }
+
+    return false;
   }
 }

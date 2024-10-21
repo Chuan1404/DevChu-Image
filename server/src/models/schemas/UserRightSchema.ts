@@ -13,11 +13,11 @@ export default function initUserRight() {
       expireDate: {
         type: Date,
       },
-      user: {
+      userId: {
         type: String,
         ref: "User",
       },
-      file: {
+      fileId: {
         type: String,
         ref: "FileUploaded",
       },

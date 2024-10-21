@@ -32,4 +32,19 @@ export default class AuthController {
       res.status(400).json({ error: (error as Error).message });
     }
   }
+
+  async verifyUser(req: Request, res: Response) {
+    try {
+      let { code } = req.params;
+      let validResult = await this.service.verifyUser(code);
+
+      if (validResult) {
+        res.status(201).json({ message: "Verify user success" });
+      } else {
+        res.status(201).json({ message: "Verify user fail" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
 }

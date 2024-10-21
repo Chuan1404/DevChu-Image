@@ -22,11 +22,11 @@ export default function initReceipt() {
         type: Number,
         default: 0,
       },
-      user: {
+      userId: {
         type: String,
         ref: "User",
       },
-      file: {
+      fileId: {
         type: String,
         ref: "FileUploaded",
       },
