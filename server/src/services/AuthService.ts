@@ -13,13 +13,13 @@ import {
   AuthRegisterSchema,
 } from "../models/types/Auth";
 import { RefreshToken } from "../models/types/RefreshToken";
-import { User } from "../models/types/User";
+import { User, UserCondDTO } from "../models/types/User";
 import { VerificationCode } from "../models/types/VerificationCode";
 import { IRefreshTokenRepository } from "../repositories/interfaces/IRefreshTokenRepository";
 import { IUserRepository } from "../repositories/interfaces/IUserRepository";
 import { IVerificationCodeRepository } from "../repositories/interfaces/IVerificationCodeRepository";
 import { IAuthService } from "../services/interfaces/IAuthService";
-import { EAccountStatus, EModelStatus } from "../share/enums";
+import { EAccountStatus, EModelStatus, EUserRole } from "../share/enums";
 import {
   ErrAccountBanned,
   ErrDataExisted,
@@ -32,6 +32,7 @@ import { IComparePassword } from "../share/interfaces/IComparePassword";
 import { IHashPassword } from "../share/interfaces/IHashPassword";
 import { emailContent, emailTitle } from "../share/messages";
 import { IMailService } from "./interfaces/IMailService";
+import { GoogleAuthDTO, GoogleAuthSchema } from "../models/types/GoogleAuth";
 
 @injectable()
 export default class AuthService implements IAuthService {
@@ -245,5 +246,78 @@ export default class AuthService implements IAuthService {
     }
 
     return false;
+  }
+
+  async loginByGoogle(
+    data: GoogleAuthDTO,
+    isAllowCustommer: boolean
+  ): Promise<Auth | null> {
+    let { success, data: parsedData } = GoogleAuthSchema.safeParse(data);
+
+    if (!success) throw ErrLoginFail;
+
+    let userQuery: UserCondDTO = {
+      email: parsedData!.email,
+    };
+
+    if (!isAllowCustommer) userQuery.role = EUserRole.ROLE_ADMIN;
+
+    let user = await this.userRepository.findByCond(userQuery);
+
+    let id = "";
+    if (user == null) {
+      id = v7();
+      await this.userRepository.create({
+        id,
+        name: parsedData!.name,
+        password: v7(),
+        role: EUserRole.ROLE_CUSTOMER,
+        status: EModelStatus.ACTIVE,
+        email: parsedData!.email,
+        accountStatus: EAccountStatus.VERIFIED,
+        avatar: parsedData!.picture,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    } else {
+      id = user.id;
+    }
+
+    const payload: AuthPayloadDTO = {
+      id,
+      email: parsedData!.email,
+      role: user ? user.role : EUserRole.ROLE_CUSTOMER,
+    };
+
+    const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
+    const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
+    const refreshTokenSecret =
+      process.env.REFRESH_TOKEN_SECRET ?? "refreshToken";
+
+    let accessToken = jwt.sign(payload, accessTokenSecret, {
+      expiresIn: accessTokenLife,
+    });
+    let refreshToken = jwt.sign(payload, refreshTokenSecret, {
+      expiresIn: refreshTokenLife,
+    });
+
+    let newToken: RefreshToken = {
+      id: v7(),
+      token: refreshToken,
+      status: EModelStatus.ACTIVE,
+      userId: id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    await this.refreshTokenRepository.create(newToken);
+
+    const response: Auth = {
+      accessToken,
+      refreshToken,
+    };
+
+    return response;
   }
 }

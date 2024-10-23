@@ -14,6 +14,7 @@ export default function setupAuthRoute() {
 
   authRouter.post("/register", authController.register.bind(authController));
   authRouter.post("/sign-in", authController.login.bind(authController));
+  authRouter.post("/google", authController.loginByGoogle.bind(authController));
   authRouter.post(
     "/refresh-token",
     authController.refreshToken.bind(authController)

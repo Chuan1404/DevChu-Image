@@ -24,6 +24,15 @@ export default class AuthController {
     }
   }
 
+  async loginByGoogle(req: Request, res: Response) {
+    try {
+      const result = await this.service.loginByGoogle(req.body, true);
+      res.status(201).json({ data: result });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
   async refreshToken(req: Request, res: Response) {
     try {
       const result = await this.service.refreshToken(req.body);
