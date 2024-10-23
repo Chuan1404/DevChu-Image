@@ -3,10 +3,10 @@ import { getData } from "../utils/fetchData";
 
 const tagService = {
   getByKw(kw) {
-    return getData(`${API}tag/?q=${kw}`);
+    return getData(`${API}tags/?q=${kw}`);
   },
   getTop() {
-    return getData(`${API}tag/top`)
+    return getData(`${API}tags/top`)
   }
 };
 

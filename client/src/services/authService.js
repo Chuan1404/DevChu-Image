@@ -3,7 +3,7 @@ import { postData } from "../utils/fetchData";
 
 const authService = {
   async signUp(form) {
-    const response = await fetch(`${API}auth/sign-up`, {
+    const response = await fetch(`${API}auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

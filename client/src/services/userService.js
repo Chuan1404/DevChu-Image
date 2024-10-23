@@ -3,17 +3,17 @@ import { callWithToken } from "../utils/fetchData";
 
 const userService = {
   getInfo() {
-    return callWithToken(`${API}user/info`)
+    return callWithToken(`${API}users/get-info`)
   },
   getReceipt() {
-    return callWithToken(`${API}user/receipt`)
+    return callWithToken(`${API}users/receipt`)
   },
 
   getPaid() {
-    return callWithToken(`${API}user/paid`)
+    return callWithToken(`${API}users/paid`)
   },
   getFile() {
-    return callWithToken(`${API}user/file`)
+    return callWithToken(`${API}users/file`)
   }
 };
 

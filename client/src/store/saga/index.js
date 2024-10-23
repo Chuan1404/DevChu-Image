@@ -7,8 +7,9 @@ import userService from "../../services/userService";
 // sign in
 function* fetchSignIn(action) {
   const response = yield call(authService.signIn, action.payload);
+
   if (!response.error) {
-    yield put(signIn(response));
+    yield put(signIn(response.data));
     yield put({ type: "FETCH_INFO" });
     yield put(closeAuth());
   } else {
@@ -20,7 +21,7 @@ function* fetchSignIn(action) {
 function* fetchInfo() {
   const response = yield call(userService.getInfo);
   if (!response.error) {
-    yield put(setInfo(response));
+    yield put(setInfo(response.data));
   } else {
     alert(response.error)
   }
@@ -29,7 +30,7 @@ function* fetchInfo() {
 function* oAuth2(action) {
   const response = yield call(authService.google, action.payload);
   if (!response.error) {
-    yield put(signIn(response));
+    yield put(signIn(response.data));
     yield put({ type: "FETCH_INFO" });
     yield put(closeAuth());
   } else {

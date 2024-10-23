@@ -27,7 +27,7 @@ export const callWithToken = async (api, options = {type: 'json'}) => {
   const token = JSON.parse(localStorage.getItem("token"));
   if (!token)
     return {
-      status: 403,
+      status: 401,
       error: "Forbiden",
     };
 
@@ -41,7 +41,7 @@ export const callWithToken = async (api, options = {type: 'json'}) => {
     body: options.body ? options.body : null,
   };
   let response = await fetch(api, options);
-  if (response.status != 200) {
+  if (response.status === 401) {
     response = await authService.refreshToken({
       token: token.refreshToken,
     });

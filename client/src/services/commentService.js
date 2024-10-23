@@ -3,10 +3,10 @@ import { callWithToken } from "../utils/fetchData";
 
 const commentService = {
   getCommentOfFile(fileId) {
-    return callWithToken(`${API}comment/?fileId=${fileId}`);
+    return callWithToken(`${API}comments/?fileId=${fileId}`);
   },
   addComment(fileId, content = "") {
-    return callWithToken(`${API}comment/add`, {
+    return callWithToken(`${API}comments/add`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

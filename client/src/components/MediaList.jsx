@@ -14,7 +14,7 @@ export default function MediaList({
   const handleChange = (event, value) => {
     setOption({ ...option, page: value });
   };
-  console.log(data?.content?.map(item => item.tags))
+  // console.log(data?.content?.map(item => item.tags))
   return (
     <Box className="mediaList" {...props}>
       <Box className="mediaList__items" marginTop={2}>

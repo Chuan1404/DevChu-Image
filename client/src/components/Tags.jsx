@@ -4,11 +4,11 @@ import { tagService } from "../services";
 
 export default function Tags({options, setOptions, ...props}) {
     
-    const {data, fetching} = useQuery(tagService.getTop, [])
+    const {tags, fetching} = useQuery(tagService.getTop, [])
     return (
         <Box {...props}>
-            {data?.map((item, index) => <Chip key={index} sx={{marginRight: 1, marginBottom: 1}}
-            label={item}
+            {tags?.data && tags.data.map((item, index) => <Chip key={index} sx={{marginRight: 1, marginBottom: 1}}
+            label={item.name}
             component="a"
             variant="outlined"
             clickable
