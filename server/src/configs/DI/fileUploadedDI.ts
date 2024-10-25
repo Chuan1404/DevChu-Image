@@ -6,13 +6,13 @@ import { FileUploadedService } from "../../services/FileUploadedService";
 import { FileUploadedController } from "../../controllers/FileUploadedController";
 
 export default function setupFileUploadedDI() {
-    container.register<IFileUploadedRepository>("IFileUploadedRepository", {
-        useClass: FileUploadedRepository,
-      });
-      container.register<IFileUploadedService>("IFileUploadedService", {
-        useClass: FileUploadedService,
-      });
-      container.register<FileUploadedController>('FileUploadedController', {
-        useClass: FileUploadedController,
-      });
+  container.register<IFileUploadedRepository>("IFileUploadedRepository", {
+    useClass: FileUploadedRepository,
+  });
+  container.register<IFileUploadedService>("IFileUploadedService", {
+    useClass: FileUploadedService,
+  });
+  container.register<FileUploadedController>("FileUploadedController", {
+    useClass: FileUploadedController,
+  });
 }

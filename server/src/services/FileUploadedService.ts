@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { v7 } from "uuid";
 import {
   FileUploaded,
@@ -9,21 +10,23 @@ import {
   FileUploadedUpdateSchema,
 } from "../models/types/FileUploaded";
 import { IFileUploadedRepository } from "../repositories/interfaces/IFileUploadedRepository";
-import {
-  ErrDataExisted,
-  ErrDataInvalid,
-  ErrDataNotFound,
-} from "../share/errors";
+import { EFileQuality, EModelStatus, EQuantiryValue } from "../share/enums";
+import { ErrDataInvalid, ErrDataNotFound } from "../share/errors";
+import { IImageHandler } from "../share/interfaces/IImageHandler";
+import IUploader from "../share/interfaces/IUploader";
 import { PagingDTO } from "../share/types";
 import { IFileUploadedService } from "./interfaces/IFileUploadedService";
-import { EModelStatus } from "../share/enums";
-import { inject, injectable } from "tsyringe";
+import sharp from "sharp";
 
 @injectable()
 export class FileUploadedService implements IFileUploadedService {
   constructor(
     @inject("IFileUploadedRepository")
-    private readonly repository: IFileUploadedRepository
+    private readonly repository: IFileUploadedRepository,
+    @inject("IImageHandler")
+    private readonly imageHandler: IImageHandler,
+    @inject("IUploader")
+    private readonly uploader: IUploader
   ) {}
 
   async create(data: FileUploadedCreateDTO): Promise<string> {
@@ -34,32 +37,75 @@ export class FileUploadedService implements IFileUploadedService {
       throw ErrDataInvalid;
     }
 
-    const isExisted = await this.repository.findByCond({
-      userId: parsedData.userId,
-    });
-
-    if (isExisted) {
-      throw ErrDataExisted;
-    }
+    const metadata = await sharp(parsedData.file.buffer).metadata();
 
     let newId = v7();
     const newData: FileUploaded = {
       id: newId,
-      root: parsedData.root,
-      display: parsedData.display,
-      high: parsedData.high,
-      medium: parsedData.medium,
-      width: parsedData.width,
+      root: "",
+      display: "",
+      high: "",
+      medium: "",
+      width: metadata.width!,
+      height: metadata.height!,
       title: parsedData.title,
       price: parsedData.price,
-      size: parsedData.size,
-      fileType: parsedData.fileType,
-      height: parsedData.height,
+      size: metadata.size ?? 0,
+      fileType: metadata.format!,
       userId: parsedData.userId,
       status: EModelStatus.ACTIVE,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
+    let keys = Object.keys(EFileQuality);
+
+    for (const key of keys) {
+      let url: string, resizedFile: Express.Multer.File;
+
+      switch (key) {
+        case EFileQuality.ROOT:
+          url = await this.uploader.uploadFile(
+            parsedData.file,
+            EFileQuality.ROOT
+          );
+          newData.root = url;
+          break;
+
+        case EFileQuality.DISPLAY:
+          resizedFile = await this.imageHandler.resizedFile(
+            parsedData.file,
+            EQuantiryValue.DISPLAY
+          );
+          url = await this.uploader.uploadFile(
+            resizedFile,
+            EFileQuality.DISPLAY
+          );
+          newData.display = url;
+          break;
+
+        case EFileQuality.MEDIUM:
+          resizedFile = await this.imageHandler.resizedFile(
+            parsedData.file,
+            EQuantiryValue.MEDIUM
+          );
+          url = await this.uploader.uploadFile(
+            resizedFile,
+            EFileQuality.MEDIUM
+          );
+          newData.medium = url;
+          break;
+
+        case EFileQuality.HIGH:
+          resizedFile = await this.imageHandler.resizedFile(
+            parsedData.file,
+            EQuantiryValue.HIGH
+          );
+          url = await this.uploader.uploadFile(resizedFile, EFileQuality.HIGH);
+          newData.high = url;
+          break;
+      }
+    }
 
     await this.repository.create(newData);
 
@@ -109,5 +155,10 @@ export class FileUploadedService implements IFileUploadedService {
     }
 
     return await this.repository.delete(id, isHard);
+  }
+
+  async checkBeforeCreate(file: Express.Multer.File): Promise<boolean> {
+    await this.imageHandler.checkFile(file);
+    return true;
   }
 }

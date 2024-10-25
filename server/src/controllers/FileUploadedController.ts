@@ -1,18 +1,43 @@
 import { Request, Response } from "express";
-import { IFileUploadedService } from "../services/interfaces/IFileUploadedService";
-import { FileUploadedCondSchema } from "../models/types/FileUploaded";
-import { PagingSchema } from "../share/types";
 import { inject, injectable } from "tsyringe";
+import {
+  FileUploadedCondSchema,
+  FileUploadedCreateDTO,
+} from "../models/types/FileUploaded";
+import { IFileUploadedService } from "../services/interfaces/IFileUploadedService";
+import { PagingSchema } from "../share/types";
 
 @injectable()
 export class FileUploadedController {
   constructor(
-    @inject("IFileUploadedService") private readonly service: IFileUploadedService
+    @inject("IFileUploadedService")
+    private readonly service: IFileUploadedService
   ) {}
-
-  async create(req: Request, res: Response) {
+  async checkFile(req: Request, res: Response) {
     try {
-      const result = await this.service.create(req.body);
+      let file = req.file;
+      if (!file) {
+        res.status(400).json({ error: "File is required" });
+        return;
+      }
+
+      await this.service.checkBeforeCreate(file);
+      res.status(200).json({ message: "Check file successfully" });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async upload(req: Request, res: Response) {
+    try {
+      let body: FileUploadedCreateDTO = {
+        price: Number(req.body.price),
+        title: req.body.title,
+        userId: "123",
+        file: req.file,
+      };
+
+      const result = await this.service.create(body);
       res.status(201).json({ data: result });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });

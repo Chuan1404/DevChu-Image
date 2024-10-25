@@ -14,6 +14,10 @@ import setupRefreshTokenDI from "./refreshTokenDI";
 import setupTagDI from "./tagDI";
 import setupUserDI from "./userDI";
 import setupVerificationCodeDI from "./verificationCode";
+import { IImageHandler } from "../../share/interfaces/IImageHandler";
+import ImageHandler from "../../share/components/ImageHandler";
+import IUploader from "../../share/interfaces/IUploader";
+import AWS from "../AWS";
 
 const setupDI = () => {
   container.register<IHashPassword>("IHashPassword", {
@@ -27,6 +31,12 @@ const setupDI = () => {
   });
   container.register<Transporter>("Transporter", {
     useValue: mailTransporter,
+  });
+  container.register<IImageHandler>("IImageHandler", {
+    useClass: ImageHandler,
+  });
+  container.register<IUploader>("IUploader", {
+    useClass: AWS,
   });
   setupUserDI();
   setupFileUploadedDI();

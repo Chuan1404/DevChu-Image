@@ -1,3 +1,4 @@
+import { injectable } from "tsyringe";
 import { modelName } from "../models/interfaces/IFileUploaded";
 import {
   FileUploaded,
@@ -6,6 +7,7 @@ import {
 } from "../models/types/FileUploaded";
 import { MongoRepository } from "../share/components/MongoRepository";
 
+@injectable()
 export class FileUploadedRepository extends MongoRepository<
   FileUploaded,
   FileUploadedCondDTO,

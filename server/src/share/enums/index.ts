@@ -1,6 +1,7 @@
 export enum EFileType {
-  JPEG = "JPEG",
-  PNG = "PNG",
+  JPEG = "jpeg",
+  JPG = "jpg",
+  PNG = "png",
 }
 
 export enum EAccountStatus {
@@ -15,6 +16,15 @@ export enum EFileQuality {
   DISPLAY = "DISPLAY",
   ROOT = "ROOT",
   AVATAR = "AVATAR",
+}
+
+export enum EQuantiryValue {
+  MEDIUM = 1280,
+  HIGH = 1920,
+  DISPLAY = 640,
+  AVATAR = 180,
+
+  MINIMUM = 2000
 }
 
 export enum EPaymentMethod {

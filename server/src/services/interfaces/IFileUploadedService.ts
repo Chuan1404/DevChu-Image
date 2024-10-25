@@ -12,4 +12,6 @@ export interface IFileUploadedService
     FileUploadedCondDTO,
     FileUploadedCreateDTO,
     FileUploadedUpdateDTO
-  > {}
+  > {
+    checkBeforeCreate(file: Express.Multer.File): Promise<boolean>;
+  }

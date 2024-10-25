@@ -15,7 +15,7 @@ export const FileUploadedSchema = z.object({
   userId: z.string(),
 
   status: z.nativeEnum(EModelStatus),
-  fileType: z.nativeEnum(EFileType),
+  fileType: z.string(),
 
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -24,20 +24,8 @@ export const FileUploadedSchema = z.object({
 export const FileUploadedCreateSchema = z.object({
   title: z.string().min(2),
   price: z.number().min(0),
-  root: z.string(),
-  display: z.string(),
-  medium: z.string(),
-  high: z.string(),
-  size: z.number().min(0),
-  width: z.number().min(0),
-  height: z.number().min(0),
+  file: z.any(),
   userId: z.string(),
-
-  status: z.nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
-  fileType: z.nativeEnum(EFileType),
-
-  createdAt: z.date(),
-  updatedAt: z.date(),
 });
 
 export const FileUploadedUpdateSchema = z.object({
@@ -54,7 +42,7 @@ export const FileUploadedCondSchema = z.object({
   height: z.number().min(0).optional(),
   userId: z.string().optional(),
   status: z.nativeEnum(EModelStatus).optional(),
-  fileType: z.nativeEnum(EFileType).optional(),
+  fileType: z.string().optional(),
 });
 
 export type FileUploaded = z.infer<typeof FileUploadedSchema>;
