@@ -31,7 +31,7 @@ export const getData = async (api, options = {}) => {
   return response.json();
 };
 
-export const callWithToken = async (api, options = {type: 'json'}) => {
+export const callWithToken = async (api, options = {}, type = "json") => {
   const token = JSON.parse(localStorage.getItem("token"));
   if (!token)
     return {
@@ -48,11 +48,15 @@ export const callWithToken = async (api, options = {type: 'json'}) => {
     },
     body: options.body ? options.body : null,
   };
+  if (type === "json") options.headers["Content-Type"] = "application/json";
+
   let response = await fetch(api, options);
+
   if (response.status === 401) {
     response = await authService.refreshToken({
       token: token.refreshToken,
     });
+
     if (!response.error) {
       options.headers.Authorization = `Bearer ${response.accessToken}`;
       localStorage.setItem("token", JSON.stringify(response));
@@ -65,7 +69,8 @@ export const callWithToken = async (api, options = {type: 'json'}) => {
       };
     }
   }
-  return options.type === 'json'? response.json() : response.arrayBuffer();
+
+  return response.json();
 };
 
 export const postFile = async (api, options = {}) => {

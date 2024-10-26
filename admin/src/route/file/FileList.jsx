@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -34,7 +34,8 @@ const FileList = () => {
         header: "Display",
         accessorKey: "display",
         Cell: ({ row }) => {
-          return <img src={row.original.display} width={200} />;
+          if (!row) return "";
+          return <img src={row.original.display} width={200} alt="" />;
         },
       },
       {
@@ -102,8 +103,8 @@ const FileList = () => {
   const handleDelete = async (id) => {
     let res = await fileService.deleteFile(id);
     if (!res.error) {
-      let filterData = fileData.content.filter((item) => item.id != id);
-      setFileData({ ...fileData, content: filterData });
+      let newData = fileData.data.filter((item) => item.id !== id);
+      setFileData({ ...fileData, data: newData });
       dispatch(openAlert({ type: "success", message: "Xóa thành công" }));
     } else {
       dispatch(
@@ -138,12 +139,13 @@ const FileList = () => {
 
 function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
   const dispatch = useDispatch();
-  const [status, setStatus] = useState(defaultValues.status);
+  const [status, setStatus] = useState(defaultValues.status === "ACTIVE");
 
   const {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
@@ -194,9 +196,13 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
       <FormControlLabel
         control={
           <Switch
-            {...register("status")}
-            checked={status === "ACTIVE"}
-            onChange={(e, value) => setStatus(value ? "ACTIVE" : "INACTIVE")}
+            // {...register("status")}
+            value={getValues("status") === "ACTIVE"}
+            checked={status}
+            onChange={(e, value) => {
+              setStatus(value);
+              setValue("status", value ? "ACTIVE" : "INACTIVE");
+            }}
           />
         }
         label="Trạng thái"

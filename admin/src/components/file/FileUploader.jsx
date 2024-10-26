@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import loading from "../../assets/images/loading2.svg";
 import { API } from "../../assets/js/constants";
 import { callWithToken } from "../../utils/fetchData";
+import fileService from "../../services/fileService";
 
 const FileUploader = ({ width = "100%" }) => {
   const [files, setFiles] = useState([]);
@@ -28,7 +29,7 @@ const FileUploader = ({ width = "100%" }) => {
 
   // delete handled file
   const handleDelete = (file) => {
-    setStack((prestate) => prestate.filter((item) => item.id != file.id));
+    setStack((prestate) => prestate.filter((item) => item.id !== file.id));
   };
 
   // handle when input file changes
@@ -37,10 +38,7 @@ const FileUploader = ({ width = "100%" }) => {
     files.forEach(async function (item) {
       let formData = new FormData();
       formData.append("file", item.file);
-      let result = await callWithToken(`${API}/file/check`, {
-        method: "POST",
-        body: formData,
-      });
+      let result = await fileService.checkFiles(formData);
       fileHandle.unshift({ ...item, result });
 
       // add handled file to stack
