@@ -1,5 +1,5 @@
+import { ErrorMessage } from "@hookform/error-message";
 import {
-  Avatar,
   Button,
   Chip,
   Divider,
@@ -13,11 +13,10 @@ import React, { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Authenticated, InputTags, Table } from "../../components";
+import { Authenticated, Table } from "../../components";
 import useQuery from "../../hooks/useQuery";
 import { fileService } from "../../services";
 import { closeForm, openAlert } from "../../store/slices/pageSlice";
-import { ErrorMessage } from "@hookform/error-message";
 
 const FileList = () => {
   const { search } = useLocation();
@@ -27,14 +26,16 @@ const FileList = () => {
     fetching: isLoading,
     setData: setFileData,
   } = useQuery(() => fileService.getFiles(search), [search]);
-  const { user } = useSelector((store) => store.auth);
 
+  const { user } = useSelector((store) => store.auth);
   const columns = useMemo(
     () => [
       {
         header: "Display",
         accessorKey: "display",
-        Cell: ({ row }) => <img src={row.original.display} width={200} />,
+        Cell: ({ row }) => {
+          return <img src={row.original.display} width={200} />;
+        },
       },
       {
         header: "Tiêu đề",
@@ -45,53 +46,36 @@ const FileList = () => {
           </Typography>
         ),
       },
+      {
+        header: "Giá",
+        accessorKey: "price",
+      },
       // {
-      //   header: "Tags",
-      //   accessorKey: "tags",
+      //   header: "Người chỉnh sửa",
       //   Cell: ({ row }) => {
-      //     return (
-      //       <Stack spacing={1} direction={"row"}>
-      //         {row.original.tags.map((tag, index) => (
-      //           <Chip key={index} size="small" label={tag} />
-      //         ))}
-      //       </Stack>
-      //     );
+      //     if (row.original.user != null) {
+      //       let { avatar, id, name } = row.original.user;
+      //       return (
+      //         <Stack direction={"row"} alignItems={"center"} spacing={1}>
+      //           <Avatar src={avatar} />
+      //           <Typography variant="h6">{name}</Typography>
+      //         </Stack>
+      //       );
+      //     } else {
+      //       return <Typography>Đã xóa</Typography>;
+      //     }
       //   },
       // },
       {
-        header: "Giá",
-        accessorKey: "price", //simple accessorKey pointing to flat data
-      },
-
-      {
-        header: "Người chỉnh sửa",
-        Cell: ({ row }) => {
-          if (row.original.user != null) {
-            let { avatar, id, name } = row.original.user;
-            return (
-              // <Stack spacing={1}>
-              <Stack direction={"row"} alignItems={"center"} spacing={1}>
-                <Avatar src={avatar} />
-                <Typography variant="h6">{name}</Typography>
-              </Stack>
-              // <Typography variant="body1">{`ID: ${id}`}</Typography>
-              // </Stack>
-            );
-          } else {
-            return <Typography>Đã xóa</Typography>;
-          }
-        },
-      },
-      {
         header: "Trạng thái",
-        accessorKey: "isActive",
+        accessorKey: "status",
         Cell: ({ row }) => {
-          let isActive = row.original.isActive;
+          let status = row.original.status;
           return (
             <Chip
               size="small"
-              label={isActive ? "Sẵn sàng" : "Chưa sẵn sàng"}
-              color={isActive ? "success" : "error"}
+              label={status === "ACTIVE" ? "Sẵn sàng" : "Chưa sẵn sàng"}
+              color={status === "ACTIVE" ? "success" : "error"}
             />
           );
         },
@@ -106,12 +90,12 @@ const FileList = () => {
   );
 
   const handleEdit = (editedData) => {
-    if (editedData.error) return alert(editedData.error);
+    let newData = fileData.data.map((item) =>
+      item.id === editedData.id ? editedData : item
+    );
     setFileData({
       ...fileData,
-      content: fileData.content.map((item) => {
-        return item.id == editedData.id ? editedData : item;
-      }),
+      data: [...newData],
     });
   };
 
@@ -130,6 +114,7 @@ const FileList = () => {
       );
     }
   };
+
   return (
     <Authenticated>
       <main id="file_page">
@@ -139,21 +124,21 @@ const FileList = () => {
         <Divider sx={{ marginTop: 2, marginBottom: 4 }} />
         <Table
           columns={columns}
-          data={fileData}
+          data={fileData.data}
           isLoading={isLoading}
           FormEdit={FormEdit}
           handleDelete={handleDelete}
           handleEdit={handleEdit}
-          disableDelete={!user.userRoles?.includes("ROLE_ADMIN")}
+          disableDelete={!user.role === "ROLE_ADMIN"}
         />
       </main>
     </Authenticated>
   );
 };
+
 function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
   const dispatch = useDispatch();
-  let tagRef = useRef(null);
-  const [isActive, setIsActive] = useState(defaultValues.isActive);
+  const [status, setStatus] = useState(defaultValues.status);
 
   const {
     register,
@@ -165,13 +150,10 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
   });
 
   const onSubmit = async (data) => {
-    let formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("price", data.price);
-    // formData.append("tags", tagRef.current.value.split(","));
-    formData.append("isActive", isActive);
-    let response = await fileService.updateFiles(data.id, formData);
-    handleEdit(response);
+    let response = await fileService.updateFiles(data.id, data);
+    if (!response.error) {
+      handleEdit(data);
+    }
     dispatch(closeForm());
   };
   return (
@@ -212,9 +194,9 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
       <FormControlLabel
         control={
           <Switch
-            {...register("isActive")}
-            checked={isActive}
-            onChange={(e, value) => setIsActive(value)}
+            {...register("status")}
+            checked={status === "ACTIVE"}
+            onChange={(e, value) => setStatus(value ? "ACTIVE" : "INACTIVE")}
           />
         }
         label="Trạng thái"

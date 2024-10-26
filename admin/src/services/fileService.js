@@ -3,14 +3,18 @@ import { callWithToken, getData, postFile } from "../utils/fetchData";
 
 const fileService = {
   getFiles(search = "") {
-    if (search == "") search = "?";
-    return callWithToken(`${ADMIN_API}/files/${search}`);
+    if (search === "") search = "?";
+    return callWithToken(`${API}/files/${search}`);
   },
 
   updateFiles(id, form) {
-    return callWithToken(`${API}/files/update/${id}`, {
-      method: "POST",
-      body: form,
+    return callWithToken(`${API}/files/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(form),
+      type: 'json',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
   },
 
@@ -22,7 +26,7 @@ const fileService = {
   },
 
   deleteFile(id, form) {
-    return callWithToken(`${API}/files/delete/${id}`, {
+    return callWithToken(`${API}/files/${id}`, {
       method: "DELETE",
     })
   }

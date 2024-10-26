@@ -64,7 +64,7 @@ const Table = ({
     <>
       <MaterialReactTable
         columns={columns}
-        data={data.content || []}
+        data={data || []}
         manualPagination
         rowCount={data?.totalElements || 5}
         // enableRowSelection //enable some features
