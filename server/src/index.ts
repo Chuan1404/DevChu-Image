@@ -19,8 +19,8 @@ setupDI();
 
   // middleware
   app.use(cors());
-  app.use(bodyParser.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(bodyParser.json({ limit: "50mb" }));
+  app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
   // router
   router(app);

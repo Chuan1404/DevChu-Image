@@ -1,17 +1,14 @@
-import { Request } from "express";
-import multer, { FileFilterCallback } from "multer";
-import path from "path";
-import { v4 } from "uuid";
+import multer from "multer";
 
-export const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "src/share/images"); // Specify the destination folder for uploads
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${v4()}${path.extname(file.originalname)}`;
-    cb(null, uniqueSuffix); // Generate a unique filename
-  },
-});
+// export const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "src/share/images"); // Specify the destination folder for uploads
+//   },
+//   filename: (req, file, cb) => {
+//     const uniqueSuffix = `${v4()}${path.extname(file.originalname)}`;
+//     cb(null, uniqueSuffix); // Generate a unique filename
+//   },
+// });
 
 // export const fileFilter = (
 //   req: Request,
@@ -28,7 +25,9 @@ export const storage = multer.diskStorage({
 
 // Initialize Multer with storage and file filter
 export const upload = multer({
-    storage: multer.memoryStorage(),
-    // fileFilter,
-    // limits: { fileSize: 1024 * 1024 * 5 }, // Limit the file size to 5MB
-  });
+  storage: multer.memoryStorage(),
+  // fileFilter,
+  limits: {
+    fileSize: 50 * 1024 * 1024,
+  },
+});

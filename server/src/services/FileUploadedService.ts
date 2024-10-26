@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { inject, injectable } from "tsyringe";
 import { v7 } from "uuid";
 import {
@@ -16,7 +17,6 @@ import { IImageHandler } from "../share/interfaces/IImageHandler";
 import IUploader from "../share/interfaces/IUploader";
 import { PagingDTO } from "../share/types";
 import { IFileUploadedService } from "./interfaces/IFileUploadedService";
-import sharp from "sharp";
 
 @injectable()
 export class FileUploadedService implements IFileUploadedService {
@@ -113,10 +113,11 @@ export class FileUploadedService implements IFileUploadedService {
   }
 
   async update(id: string, data: FileUploadedUpdateDTO): Promise<boolean> {
-    const { success, data: parsedData } =
+    const { success, data: parsedData, error } =
       FileUploadedUpdateSchema.safeParse(data);
 
     if (!success) {
+      console.log(error)
       throw ErrDataInvalid;
     }
 
