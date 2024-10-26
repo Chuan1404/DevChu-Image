@@ -53,10 +53,11 @@ export default function FileDetail() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
+  console.log(file?.data)
   return (
     <main id="filepage">
       <Container sx={{ pt: 7 }}>
-        {file.id > 0 ? (
+        {file?.data?.id ? (
           <FormControl fullWidth>
             <Grid container spacing={2}>
               <Grid item xs={12} md={8}>
@@ -74,14 +75,14 @@ export default function FileDetail() {
                     />
                   )}
                   {!isLoading && (
-                    <ImageZoom src={file.high} alt="" zoom="200" />
+                    <ImageZoom src={file?.data?.high} alt="" zoom="200" />
                   )}
                 </Stack>
               </Grid>
 
               <Grid item xs={12} md={4}>
                 <Typography align="center" variant="h6">
-                  {file.title}
+                  {file?.data?.title}
                 </Typography>
 
                 <Box padding={2}>
@@ -121,7 +122,7 @@ export default function FileDetail() {
                           </TableCell>
                           <TableCell>
                             <Typography variant="body1">
-                              {file.price?.toLocaleString("it-IT", {
+                              {file?.data?.price?.toLocaleString("it-IT", {
                                 style: "currency",
                                 currency: "VND",
                               })}
@@ -134,16 +135,16 @@ export default function FileDetail() {
                           </TableCell>
                           <TableCell>
                             <Typography variant="body1">
-                              {file.width} x {file.height}
+                              {file?.data?.width} x {file?.data?.height}
                             </Typography>
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>
-                            <Typography>Loại File</Typography>
+                            <Typography>Loại file</Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography variant="body1">{file.type}</Typography>
+                            <Typography variant="body1">{file?.data?.fileType}</Typography>
                           </TableCell>
                         </TableRow>
                         <TableRow>
@@ -153,7 +154,7 @@ export default function FileDetail() {
                           <TableCell>
                             <Typography variant="body1">
                               {Math.round(
-                                (file.size / 8 / Math.pow(2, 20)) * 100
+                                (file?.data?.size / 8 / Math.pow(2, 20)) * 100
                               ) / 100}{" "}
                               MB
                             </Typography>

@@ -15,19 +15,19 @@ import { Banner, MediaList, Tags } from "../components";
 import { fileService } from "../services";
 import queryLocation from "../utils/queryLocation";
 import { useDispatch, useSelector } from "react-redux";
-import { setOptions } from "../store/slices/searchSlice"
+import { setOptions } from "../store/slices/searchSlice";
 
 export default function Home() {
-  const dispatcher = useDispatch()
+  const dispatcher = useDispatch();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const fromPriceRef = useRef(null);
   const toPriceRef = useRef(null);
-  const options = useSelector(store => store.search.options)
+  const options = useSelector((store) => store.search.options);
 
   const handleChange = (payload) => {
-    dispatcher(setOptions({...payload}))
-  }
+    dispatcher(setOptions({ ...payload }));
+  };
 
   // handle get search result
   useEffect(() => {
@@ -36,8 +36,10 @@ export default function Home() {
 
       let query = `?${queryLocation.toString(options)}`;
       let res = await fileService.getFiles(query);
-      if (!res.error)
-        setData(res);
+      console.log(res);
+      if (!res.error) {
+        setData(res.data);
+      }
       setIsLoading(false);
     })();
   }, [options]);
@@ -89,8 +91,17 @@ export default function Home() {
 
           {/* <Grid item md={2} xs={12} > */}
           <Grid item xs={12} lg={2}>
-            <Stack direction={{xs: "row", lg: "column"}} justifyContent={"space-between"}>
-              <Box bgcolor={"#fff"} p={2} borderRadius={"1rem"} width={'100%'} mr={{xs: 2, lg: 0}}>
+            <Stack
+              direction={{ xs: "row", lg: "column" }}
+              justifyContent={"space-between"}
+            >
+              <Box
+                bgcolor={"#fff"}
+                p={2}
+                borderRadius={"1rem"}
+                width={"100%"}
+                mr={{ xs: 2, lg: 0 }}
+              >
                 <Typography variant="h6" mb={2}>
                   Giá
                 </Typography>
@@ -116,7 +127,7 @@ export default function Home() {
 
               <Divider sx={{ marginY: 2 }} />
 
-              <Box bgcolor={"#fff"} p={2} borderRadius={"1rem"} width={'100%'}>
+              <Box bgcolor={"#fff"} p={2} borderRadius={"1rem"} width={"100%"}>
                 <Typography variant="h6" mb={2}>
                   Loại file
                 </Typography>
@@ -150,7 +161,7 @@ export default function Home() {
             </Stack>
           </Grid>
 
-          <Grid item xs={12} lg={10} >
+          <Grid item xs={12} lg={10}>
             <MediaList
               data={data}
               options={options}

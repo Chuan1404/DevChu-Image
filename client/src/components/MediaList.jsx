@@ -3,7 +3,6 @@ import { Box, IconButton, Pagination, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import loading from "../assets/images/loading2.svg";
 
-
 export default function MediaList({
   data,
   isLoading,
@@ -14,12 +13,11 @@ export default function MediaList({
   const handleChange = (event, value) => {
     setOption({ ...option, page: value });
   };
-  // console.log(data?.content?.map(item => item.tags))
   return (
     <Box className="mediaList" {...props}>
       <Box className="mediaList__items" marginTop={2}>
         {!isLoading ? (
-          data?.content?.map((item, index) => (
+          data?.map((item, index) => (
             <Link key={index} to={`/file/detail/${item.id}`}>
               <Box className="mediaList__items--item">
                 <img src={item.display} />
@@ -42,14 +40,15 @@ export default function MediaList({
           </Stack>
         )}
       </Box>
-      {data?.totalPages > 0 && <Box className="mediaList__pagination" m={5}>
-        <Pagination
-          count={data.totalPages}
-          color="primary"
-          onChange={handleChange}
-        />
-      </Box>}
-      
+      {data?.totalPages > 0 && (
+        <Box className="mediaList__pagination" m={5}>
+          <Pagination
+            count={data.totalPages}
+            color="primary"
+            onChange={handleChange}
+          />
+        </Box>
+      )}
     </Box>
   );
 }
