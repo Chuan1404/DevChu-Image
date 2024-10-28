@@ -1,4 +1,4 @@
-# DEVCHU IMAG
+# DEVCHU IMAGE
 # 1. Introduction
 DevChu Image is a web-based platform designed for trading image files. The system uses ReactJS for the frontend, with Node.js and ExpressJS for the backend, and MongoDB for data storage. It follows a layered architecture, applying Object-Oriented Programming (OOP) techniques and adhering to SOLID principles.
 
