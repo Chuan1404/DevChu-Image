@@ -35,6 +35,7 @@ export const FileUploadedUpdateSchema = z.object({
 });
 
 export const FileUploadedCondSchema = z.object({
+  id: z.object({ $in: z.array(z.string()) }).optional(),
   title: z.string().optional(),
   price: z.number().optional(),
   size: z.number().min(0).optional(),

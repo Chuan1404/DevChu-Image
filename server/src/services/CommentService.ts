@@ -10,6 +10,8 @@ import {
   CommentUpdateSchema,
 } from "../models/types/Comment";
 import { ICommentRepository } from "../repositories/interfaces/ICommentRepository";
+import { IFileUploadedRepository } from "../repositories/interfaces/IFileUploadedRepository";
+import { IUserRepository } from "../repositories/interfaces/IUserRepository";
 import { EModelStatus } from "../share/enums";
 import { ErrDataInvalid, ErrDataNotFound } from "../share/errors";
 import { PagingDTO } from "../share/types";
@@ -19,7 +21,11 @@ import { ICommentService } from "./interfaces/ICommentService";
 export class CommentService implements ICommentService {
   constructor(
     @inject("ICommentRepository")
-    private readonly repository: ICommentRepository
+    private readonly repository: ICommentRepository,
+    @inject("IUserRepository")
+    private readonly userRepository: IUserRepository,
+    @inject("IFileUploadedRepository")
+    private readonly fileRepository: IFileUploadedRepository
   ) {}
 
   async create(data: CommentCreateDTO): Promise<string> {
@@ -52,9 +58,9 @@ export class CommentService implements ICommentService {
       throw ErrDataInvalid;
     }
 
-    let refreshToken = await this.repository.find(id);
+    let comment = await this.repository.find(id);
 
-    if (!refreshToken || refreshToken.status === EModelStatus.DELETED) {
+    if (!comment || comment.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;
     }
 
@@ -62,19 +68,45 @@ export class CommentService implements ICommentService {
   }
 
   async find(id: string): Promise<Comment> {
-    let data = await this.repository.find(id);
+    let comment = await this.repository.find(id);
 
-    if (!data || data.status === EModelStatus.DELETED) {
+    if (!comment || comment.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
-    return CommentSchema.parse(data);
+    const user = await this.userRepository.find(comment.userId);
+    const file = await this.fileRepository.find(comment.fileId);
+
+    return { ...CommentSchema.parse(comment), user, file };
   }
 
   async findAll(cond: CommentCondDTO, paging: PagingDTO): Promise<Comment[]> {
-    let data = await this.repository.findAll(cond, paging);
+    let comments = await this.repository.findAll(cond, paging);
 
-    return data ? data.map((item) => CommentSchema.parse(item)) : [];
+    const userIds = [...new Set(comments.map((comment) => comment.userId))];
+    const fileIds = [...new Set(comments.map((comment) => comment.fileId))];
+
+    const users = await this.userRepository.findAll({ id: { $in: userIds } });
+    const files = await this.fileRepository.findAll({ id: { $in: fileIds } });
+
+    // convert list to hashmap
+    const userMap = users.reduce((acc: { [key: string]: any }, user) => {
+      acc[user.id] = user;
+      return acc;
+    }, {});
+
+    const fileMap = files.reduce((acc: { [key: string]: any }, file) => {
+      acc[file.id] = file;
+      return acc;
+    }, {});
+
+    return comments
+      ? comments.map((item) => ({
+          ...CommentSchema.parse(item),
+          user: userMap[item.userId],
+          file: fileMap[item.fileId],
+        }))
+      : [];
   }
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {

@@ -28,14 +28,19 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     return data;
   }
 
-  async findAll(cond: EntityCondDTO, paging: PagingDTO): Promise<Entity[]> {
-    const { page, limit } = paging;
+  async findAll(cond: EntityCondDTO, paging?: PagingDTO): Promise<Entity[]> {
     const condSQL = { ...cond, status: { $ne: EModelStatus.DELETED } };
+    let rows;
 
-    const rows = await mongoose.models[this.modelName]
-      .find(condSQL)
-      .limit(limit)
-      .skip((page - 1) * limit);
+    if (paging) {
+      const { page, limit } = paging;
+      rows = await mongoose.models[this.modelName]
+        .find(condSQL)
+        .limit(limit)
+        .skip((page - 1) * limit);
+    } else {
+      rows = await mongoose.models[this.modelName].find(condSQL);
+    }
 
     return rows;
   }

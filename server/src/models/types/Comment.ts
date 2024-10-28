@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { EModelStatus } from "../../share/enums";
+import { FileUploaded } from "./FileUploaded";
+import { User } from "./User";
 
 export const CommentSchema = z.object({
   id: z.string(),
@@ -32,7 +34,10 @@ export const CommentCondSchema = z.object({
   status: z.nativeEnum(EModelStatus).optional(),
 });
 
-export type Comment = z.infer<typeof CommentSchema>;
+export type Comment = z.infer<typeof CommentSchema> & {
+  user?: User | null;
+  file?: FileUploaded | null;
+};
 export type CommentCreateDTO = z.infer<typeof CommentCreateSchema>;
 export type CommentUpdateDTO = z.infer<typeof CommentUpdateSchema>;
 export type CommentCondDTO = z.infer<typeof CommentCondSchema>;

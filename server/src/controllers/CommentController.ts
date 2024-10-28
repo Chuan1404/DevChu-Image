@@ -1,16 +1,23 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
-import { CommentCondSchema } from "../models/types/Comment";
+import { CommentCondSchema, CommentCreateDTO } from "../models/types/Comment";
 import { ICommentService } from "../services/interfaces/ICommentService";
 import { PagingSchema } from "../share/types";
 
 @injectable()
 export class CommentController {
-  constructor(@inject("ICommentService") private readonly service: ICommentService) {}
+  constructor(
+    @inject("ICommentService") private readonly service: ICommentService,
+  ) {}
 
   async create(req: Request, res: Response) {
     try {
-      const result = await this.service.create(req.body);
+      const body: CommentCreateDTO = {
+        content: req.body.content,
+        fileId: req.body.fileId,
+        userId: req.userId!,
+      };
+      const result = await this.service.create(body);
       res.status(201).json({ data: result });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -53,10 +60,10 @@ export class CommentController {
     }
 
     let cond = CommentCondSchema.parse(req.query);
-    let result = await this.service.findAll(cond, paging);
+    let comments = await this.service.findAll(cond, paging);
 
     res.status(200).json({
-      data: result,
+      data: comments,
       paging,
     });
   }

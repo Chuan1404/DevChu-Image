@@ -3,7 +3,7 @@ import { PagingDTO } from "../types";
 export interface IQueryRepository<Entity, EntityCondDTO> {
   find(id: string): Promise<Entity | null>;
   findByCond(cond: EntityCondDTO): Promise<Entity | null>;
-  findAll(cond: EntityCondDTO, paging: PagingDTO): Promise<Entity[]>;
+  findAll(cond: EntityCondDTO, paging?: PagingDTO): Promise<Entity[]>;
 }
 
 export interface ICommandRepository<Entity, EntityUpdateDTO> {

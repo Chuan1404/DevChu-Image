@@ -33,6 +33,7 @@ export const UserUpdateSchema = z.object({
 });
 
 export const UserCondSchema = z.object({
+  id: z.object({ $in: z.array(z.string()) }).optional(),
   email: z.string().optional(),
   name: z.string().optional(),
   accountStatus: z.nativeEnum(EAccountStatus).optional(),

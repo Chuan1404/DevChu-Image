@@ -5,7 +5,7 @@ import { EUserRole } from "../share/enums";
 import { ErrUnAuthentication } from "../share/errors";
 
 export function authToken(req: Request, res: Response, next: NextFunction) {
-  let accessToken: string = process.env.ACCESS_TOKEN_SECRET || "accessToken";
+  let accessToken: string = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
 
   const authorizationHeader = req.headers["authorization"];
 
