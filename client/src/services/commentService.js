@@ -6,7 +6,7 @@ const commentService = {
     return callWithToken(`${API}comments/?fileId=${fileId}`);
   },
   addComment(fileId, content = "") {
-    return callWithToken(`${API}comments/add`, {
+    return callWithToken(`${API}comments`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

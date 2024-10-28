@@ -7,12 +7,12 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { blue, deepOrange, grey } from "@mui/material/colors";
-import styled from "styled-components";
+import { grey } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
-import commentService from "../services/commentService";
+import styled from "styled-components";
 import useQuery from "../hooks/useQuery";
+import commentService from "../services/commentService";
 
 export default function CommnetBox({ fileId, user }) {
   const [content, setContent] = useState("");
@@ -25,11 +25,9 @@ export default function CommnetBox({ fileId, user }) {
   const handleAddComment = async () => {
     const response = await commentService.addComment(fileId, content);
 
-    console.log(response);
-
-    if(!response.error) {
-        setComments({...comments, content: [response, ...comments.content]})
-        setContent('')
+    if (!response.error) {
+      setComments({ ...comments, content: [response, ...comments.content] });
+      setContent("");
     }
   };
 
@@ -47,7 +45,7 @@ export default function CommnetBox({ fileId, user }) {
       </Stack>
       <Box marginY={3}>
         {!isLoading &&
-          comments.content?.map((comment) => (
+          comments.data?.map((comment) => (
             <Stack
               direction={"row"}
               spacing={2}
@@ -55,21 +53,21 @@ export default function CommnetBox({ fileId, user }) {
               marginY={2}
               key={comment.id}
             >
-              <Avatar src={comment.user.avatar} />
+              <Avatar src={comment?.user?.avatar} />
               <Box>
                 <Typography
                   variant="subtitle2"
                   component={"span"}
                   marginRight={2}
                 >
-                  {comment.user.name}
+                  {comment?.user?.name}
                 </Typography>
                 <Typography
                   variant="subtitle1"
                   component={"span"}
                   sx={{ fontSize: 12, color: "#999" }}
                 >
-                  {`${comment.createdDate[3]}:${comment.createdDate[4]}:${comment.createdDate[5]} ${comment.createdDate[2]}-${comment.createdDate[1]}-${comment.createdDate[0]}`}
+                  {comment.createdAt}
                 </Typography>
                 <Typography variant="body1" marginTop={2}>
                   {comment.content}
@@ -77,8 +75,6 @@ export default function CommnetBox({ fileId, user }) {
               </Box>
             </Stack>
           ))}
-
-       
       </Box>
       {comments.totalPages > 0 && <Pagination count={comments.totalPages} />}
     </Box>
