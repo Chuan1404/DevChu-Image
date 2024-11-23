@@ -4,7 +4,7 @@ import { IUser } from "./IUser";
 
 export const modelName = "Comment"
 
-export interface IComment {
+ export interface IComment {
   id: string;
   content: string;
   userId: IUser;
