@@ -36,7 +36,7 @@ export const callWithToken = async (api, options = {}, type = "json") => {
   if (!token)
     return {
       status: 401,
-      error: "Forbiden",
+      error: "Forbidden",
     };
 
   options = {

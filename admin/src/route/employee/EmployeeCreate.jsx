@@ -17,6 +17,7 @@ import { Authenticated } from "../../components";
 import { userService } from "../../services";
 import loading from "../../assets/images/loading2.svg";
 import { useNavigate } from "react-router-dom";
+import { ROLES } from "../../assets/js/constants";
 
 const EmployeeCreate = () => {
   const [avatar, setAvatar] = useState(null);
@@ -34,29 +35,29 @@ const EmployeeCreate = () => {
   const formItems = [
     {
       type: "text",
-      label: "Tên nhân viên",
-      ...register("name", { required: "Không được để trống" }),
+      label: "Employee name",
+      ...register("name", { required: "Required" }),
     },
     {
       type: "email",
       label: "Email",
-      ...register("email", { required: "Không được để trống" }),
+      ...register("email", { required: "Required" }),
     },
     {
       type: "password",
-      label: "Nhập mật khẩu",
-      ...register("password", { required: "Không được để trống" }),
+      label: "Input your password",
+      ...register("password", { required: "Required" }),
     },
     {
       type: "password",
-      label: "Xác nhận mật khẩu",
-      ...register("confirm", { required: "Không được để trống" }),
+      label: "Confirm your password",
+      ...register("confirm", { required: "Required" }),
     },
     {
       type: "file",
-      label: "ảnh đại diện",
+      label: "Avatar",
     },
-    { type: "autocomplete", label: "Vai trò" },
+    { type: "autocomplete", label: "Role" },
   ];
   const theme = useTheme();
 
@@ -67,17 +68,17 @@ const EmployeeCreate = () => {
   const formSubmit = async (data) => {
     let isSuccess = true;
     if (data.password != data.confirm) {
-      setError("confirm", { message: "Không trùng với mật khẩu" });
+      setError("confirm", { message: "Confirm password fail" });
       isSuccess = false;
     }
 
     if (avatar == null) {
-      setError("file", { message: "Không được để trống" });
+      setError("file", { message: "Required" });
       isSuccess = false;
     }
 
-    if (data.userRoles.length < 1) {
-      setError("userRoles", { message: "Phải thêm vai trò cho tài khoản" });
+    if (!data.role) {
+      setError("role", { message: "Account must have role" });
       isSuccess = false;
     }
 
@@ -88,12 +89,12 @@ const EmployeeCreate = () => {
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("password", data.password);
-      formData.append("userRoles", data.userRoles);
-      formData.append("avatar", avatar);
+      formData.append("role", data.role);
+      // formData.append("avatar", avatar);
       const response = await userService.addUser(formData);
 
       if (!response.error) {
-        navigate('/')
+        navigate("/");
       } else {
         setError("name", { message: response.error });
       }
@@ -104,14 +105,14 @@ const EmployeeCreate = () => {
     <Authenticated>
       <main id="employee_create_page">
         <Box>
-          <Typography variant="h3">Thêm nhân viên</Typography>
+          <Typography variant="h3">Add account</Typography>
         </Box>
         <Divider sx={{ marginTop: 2, marginBottom: 4 }} />
 
         <Box component={"form"} onSubmit={handleSubmit(formSubmit)}>
           <Grid container>
             <Grid item xs>
-              <Stack
+              <Stack 
                 width={"100%"}
                 height={300}
                 alignItems={"center"}
@@ -195,12 +196,11 @@ const EmployeeCreate = () => {
                   return (
                     <>
                       <Autocomplete
-                        multiple
                         key={index}
-                        options={["ROLE_EDITOR", "ROLE_ADMIN"]}
-                        {...register("userRoles")}
-                        onChange={(e, values) => {
-                          setValue("userRoles", values);
+                        options={ROLES}
+                        {...register("role")}
+                        onChange={(e, value) => {
+                          setValue("role", value);
                         }}
                         renderInput={(param) => (
                           <TextField
@@ -212,7 +212,7 @@ const EmployeeCreate = () => {
                       />
                       <ErrorMessage
                         errors={errors}
-                        name={"userRoles"}
+                        name={"role"}
                         render={({ message }) => (
                           <Typography color="primary">{message}</Typography>
                         )}
@@ -221,11 +221,12 @@ const EmployeeCreate = () => {
                   );
               })}
               {isLoading ? (
-                
-                <Stack alignItems={"center"}><img src={loading} width={50}/></Stack>
+                <Stack alignItems={"center"}>
+                  <img src={loading} width={50} />
+                </Stack>
               ) : (
                 <Button fullWidth variant="contained" type="submit">
-                  Xác nhận
+                  Submit
                 </Button>
               )}
             </Grid>

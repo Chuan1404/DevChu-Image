@@ -17,6 +17,7 @@ import useQuery from "../hooks/useQuery";
 import { userService } from "../services";
 import { closeForm } from "../store/slices/pageSlice";
 import { ErrorMessage } from "@hookform/error-message";
+import { ACCOUNT_STATUS, ROLES } from "../assets/js/constants";
 
 export default function User({ role }) {
   const { search } = useLocation();
@@ -24,7 +25,7 @@ export default function User({ role }) {
     () => [
       {
         header: "ID",
-        accessorKey: "id", //simple accessorKey pointing to flat data
+        accessorKey: "id",
       },
       {
         header: "Avatar",
@@ -34,61 +35,55 @@ export default function User({ role }) {
         },
       },
       {
-        header: "Tên",
-        accessorKey: "name", //simple accessorKey pointing to flat data
+        header: "Name",
+        accessorKey: "name",
       },
       {
         header: "Email",
-        accessorKey: "email", //simple accessorKey pointing to flat data
+        accessorKey: "email",
       },
       {
-        header: "Vai trò",
-        accessorKey: "userRoles",
+        header: "Role",
+        accessorKey: "role",
         Cell: ({ row }) => {
           return (
             <Stack spacing={1}>
-              {row.original.userRoles.map((role, index) => (
-                <Chip
-                  key={index}
-                  size="small"
-                  label={role.split("_")[1]}
-                  color={
-                    role === "ROLE_CUSTOMER"
-                      ? "success"
-                      : role === "ROLE_EDITOR"
-                      ? "info"
-                      : "error"
-                  }
-                />
-              ))}
+              <Chip
+                size="small"
+                label={row.original.role.split("_")[1]}
+                color={
+                  row.original.role === "ROLE_CUSTOMER"
+                    ? "success"
+                    : row.original.role === "ROLE_EDITOR"
+                    ? "info"
+                    : "error"
+                }
+              />
             </Stack>
           );
         },
       },
       {
-        header: "Ngày tham gia",
-        accessorKey: "createdDate", //simple accessorKey pointing to flat data
+        header: "Created at",
+        accessorKey: "createdAt",
 
         Cell: ({ row }) => {
-          let arr = row.original.createdDate;
-          return (
-            <span>{`${arr[0]}-${arr[1]}-${arr[2]} ${arr[3]}:${arr[4]}:${arr[5]}`}</span>
-          );
+          return row.original.createdAt;
         },
       },
       {
-        header: "Trạng thái",
-        accessorKey: "state", //simple accessorKey pointing to flat data
+        header: "Account status",
+        accessorKey: "accountStatus",
         Cell: ({ row }) => {
-          let state = row.original.state;
+          let status = row.original.accountStatus;
           return (
             <Chip
               size="small"
-              label={state}
+              label={status}
               color={
-                state === "VERIFIED"
+                status === "VERIFIED"
                   ? "success"
-                  : state === "BANNED"
+                  : status === "BANNED"
                   ? "error"
                   : "default"
               }
@@ -107,37 +102,35 @@ export default function User({ role }) {
 
   const handleDelete = async (id) => {
     const res = await userService.deleteUser(id);
-    if(!res.error) {
-      let filterData = userData.content.filter((item) => item.id != id);
-      setUserData({ ...userData, content: filterData });
+    if (!res.error) {
+      let filterData = userData.data.filter((item) => item.id != id);
+      setUserData({ ...userData, data: filterData });
+    } else {
+      alert(res.error);
     }
-    else {
-      alert(res.error)
-    }
-    
   };
 
-  const handleEdit = (editedData) => {
-    if (editedData.error) return alert(editedData.error);
+  const handleEdit = (id, updateRole) => {
+    const updatedData = userData.data.map((item) =>
+      item.id === id ? { ...item, role: updateRole } : item
+    );
+
     setUserData({
       ...userData,
-      content: !editedData.userRoles.includes(role)
-        ? userData.content.filter((item) => item.id != editedData.id)
-        : userData.content.map((item) =>
-            item.id == editedData.id ? editedData : item
-          ),
+      data: updatedData.filter((user) => user.role === role),
     });
   };
+
   return (
     <Authenticated>
       <main id="user_page">
         <Typography textAlign={"center"} variant="h3">
-          Danh sách tài khoản
+          Account list
         </Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 4 }} />
         <Table
           columns={columns}
-          data={userData}
+          data={userData?.data || []}
           isLoading={isLoading}
           FormEdit={FormEdit}
           handleDelete={handleDelete}
@@ -169,19 +162,21 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
   };
 
   const onSubmit = async (data) => {
-    if (data.userRoles.length < 1)
-      return setError("userRoles", ["Không được để trống"]);
+    if (!data.role) return setError("role", ["Required"]);
 
-    let formData = new FormData();
+    const formData = new FormData();
     typeof data.avatar !== "string" &&
       data.avatar != null &&
       formData.append("avatar", data.avatar);
     formData.append("name", data.name);
-    formData.append("state", data.state);
-    formData.append("userRoles", data.userRoles);
-    let response = await userService.updateUser(data.id, formData);
-    handleEdit(response);
-    dispatch(closeForm());
+    formData.append("accountStatus", data.accountStatus);
+    formData.append("role", data.role);
+
+    const response = await userService.updateUser(data.id, formData);
+    if (!response.error) {
+      handleEdit(data.id, data.role);
+      dispatch(closeForm());
+    }
   };
   return (
     <Stack
@@ -191,7 +186,7 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
       padding={3}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Typography variant="h4">Chỉnh sửa tài khoản</Typography>
+      <Typography variant="h4">Update account</Typography>
       <Button
         component="label"
         sx={{ margin: "auto", width: "fit-content", borderRadius: "50%" }}
@@ -221,8 +216,8 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
       />
       <Autocomplete
         disablePortal
-        options={["VERIFIED", "BANNED"]}
-        defaultValue={getValues("state")}
+        options={ACCOUNT_STATUS}
+        defaultValue={getValues("accountStatus")}
         onKeyDown={(e) => {
           e.preventDefault();
         }}
@@ -231,41 +226,34 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
             {...params}
             size="small"
             margin="normal"
-            label="state"
-            {...register("state", { required: "This is required." })}
+            label="accountStatus"
+            {...register("accountStatus", { required: "This is required." })}
           />
         )}
       />
       <ErrorMessage
         errors={errors}
-        name={"state"}
+        name={"accountStatus"}
         render={({ message }) => (
           <Typography color="primary">{message}</Typography>
         )}
       />
       <Autocomplete
         disablePortal
-        multiple={true}
-        options={["ROLE_CUSTOMER", "ROLE_EDITOR", "ROLE_ADMIN"]}
-        defaultValue={getValues("userRoles")}
+        options={ROLES}
+        defaultValue={getValues("role")}
         onKeyDown={(e) => {
           e.preventDefault();
         }}
-        {...register("userRoles")}
-        onChange={(e, values) => {
-          setValue("userRoles", values);
+        {...register("role")}
+        onChange={(e, value) => {
+          setValue("role", value);
         }}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            size="small"
-            margin="normal"
-            label="userRoles"
-          />
+          <TextField {...params} size="small" margin="normal" label="role" />
         )}
         renderTags={(tagValues) => {
           return tagValues.map((option, index) => {
-            // option = option.indexOf('ROLE_') == -1? option: option.split('_')[1]
             return (
               <Chip
                 key={index}
@@ -285,13 +273,13 @@ function FormEdit({ defaultValues = {}, handleEdit = () => {} }) {
       />
       <ErrorMessage
         errors={errors}
-        name={"userRoles"}
+        name={"role"}
         render={({ message }) => (
-          <Typography color="primary">{errors.userRoles?.[0]}</Typography>
+          <Typography color="primary">{errors.role?.[0]}</Typography>
         )}
       />
       <Button type="submit" variant="contained">
-        Xác nhận
+        Submit
       </Button>
     </Stack>
   );
