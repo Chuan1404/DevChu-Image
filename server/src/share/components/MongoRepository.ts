@@ -41,7 +41,6 @@ export class MongoRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     } else {
       rows = await mongoose.models[this.modelName].find(condSQL);
     }
-
     return rows;
   }
 

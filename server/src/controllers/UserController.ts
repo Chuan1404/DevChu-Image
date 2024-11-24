@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { IUserService } from "../services/interfaces/IUserService";
-import { UserCondSchema } from "../models/types/User";
-import { PagingSchema } from "../share/types";
-import { ErrUnAuthentication } from "../share/errors";
 import { inject, injectable } from "tsyringe";
+import { UserCondSchema } from "../models/types/User";
+import { IUserService } from "../services/interfaces/IUserService";
+import { ErrUnAuthentication } from "../share/errors";
+import { PagingSchema } from "../share/types";
 
 @injectable()
 export class UserController {
@@ -72,8 +72,8 @@ export class UserController {
       return;
     }
 
-    let cond = UserCondSchema.parse(req.query);
-    let result = await this.service.findAll(cond, paging);
+    const cond = UserCondSchema.parse(req.query);
+    const result = await this.service.findAll(cond, paging);
 
     res.status(200).json({
       data: result,

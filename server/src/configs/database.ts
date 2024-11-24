@@ -4,8 +4,9 @@ import init from "../models/schemas";
 
 config();
 
-const server = process.env.DATABASE_SERVER;
-const databaseName = process.env.DATABASE_NAME;
+const server = process.env.DATABASE_SERVER || "mongodb://localhost:27017";
+const databaseName = process.env.DATABASE_NAME || "devchu_images";
+console.log(server, databaseName)
 const database = {
   connect: () => {
     mongoose

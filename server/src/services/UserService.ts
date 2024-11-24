@@ -31,7 +31,6 @@ export class UserService implements IUserService {
     const {
       success,
       data: parsedData,
-      error,
     } = UserCreateSchema.safeParse(data);
 
     if (!success) {
@@ -56,7 +55,7 @@ export class UserService implements IUserService {
       avatar: "",
       password: hashedPassword,
       accountStatus: EAccountStatus.UNVERIFIED,
-      role: EUserRole.ROLE_CUSTOMER,
+      role: parsedData.role,
       status: EModelStatus.ACTIVE,
       createdAt: new Date(),
       updatedAt: new Date(),

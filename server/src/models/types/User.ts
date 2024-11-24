@@ -1,44 +1,45 @@
-import { z } from "zod";
+import { array, date, nativeEnum, object, string, z } from "zod";
 import { EAccountStatus, EModelStatus, EUserRole } from "../../share/enums";
 
 export const UserSchema = z.object({
-  id: z.string(),
-  email: z.string(),
-  password: z.string(),
-  name: z.string(),
-  avatar: z.string(),
-  status: z.nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
+  id: string(),
+  email: string(),
+  password: string(),
+  name: string(),
+  avatar: string(),
+  status: nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
 
   accountStatus: z
     .nativeEnum(EAccountStatus)
     .default(EAccountStatus.UNVERIFIED),
-  role: z.nativeEnum(EUserRole).default(EUserRole.ROLE_CUSTOMER),
+  role: nativeEnum(EUserRole).default(EUserRole.ROLE_CUSTOMER),
 
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: date(),
+  updatedAt: date(),
 });
 
-export const UserCreateSchema = z.object({
-  email: z.string(),
-  password: z.string(),
-  name: z.string(),
-  // avatar: z.string(),
+export const UserCreateSchema = object({
+  email: string(),
+  password: string(),
+  name: string(),
+  role: nativeEnum(EUserRole).default(EUserRole.ROLE_CUSTOMER),
+  // avatar: string(),
 });
 
-export const UserUpdateSchema = z.object({
-  email: z.string().optional(),
-  accountStatus: z.nativeEnum(EAccountStatus).optional(),
-  role: z.nativeEnum(EUserRole).optional(),
-  status: z.nativeEnum(EModelStatus).optional(),
+export const UserUpdateSchema = object({
+  email: string().optional(),
+  accountStatus: nativeEnum(EAccountStatus).optional(),
+  role: nativeEnum(EUserRole).optional(),
+  status: nativeEnum(EModelStatus).optional(),
 });
 
-export const UserCondSchema = z.object({
-  id: z.object({ $in: z.array(z.string()) }).optional(),
-  email: z.string().optional(),
-  name: z.string().optional(),
-  accountStatus: z.nativeEnum(EAccountStatus).optional(),
-  role: z.nativeEnum(EUserRole).optional(),
-  status: z.nativeEnum(EModelStatus).optional(),
+export const UserCondSchema = object({
+  id: object({ $in: array(string()) }).optional(),
+  email: string().optional(),
+  name: string().optional(),
+  accountStatus: nativeEnum(EAccountStatus).optional(),
+  role: nativeEnum(EUserRole).optional(),
+  status: nativeEnum(EModelStatus).optional(),
 });
 
 export type User = z.infer<typeof UserSchema>;
