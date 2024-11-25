@@ -13,8 +13,8 @@ export class UserController {
     try {
       const body: UserCreateDTO = {
         ...req.body,
-        avatar: req.file
-      }
+        avatar: req.file,
+      };
       const result = await this.service.create(body);
       res.status(201).json({ data: result });
     } catch (error) {

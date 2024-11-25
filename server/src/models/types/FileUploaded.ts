@@ -37,7 +37,11 @@ export const FileUploadedUpdateSchema = object({
 export const FileUploadedCondSchema = object({
   id: object({ $in: array(string()) }).optional(),
   title: string().optional(),
-  price: number().optional(),
+  // price: number().optional(),
+  price: object({
+    $lte: number().optional(),
+    $gte: number().optional(),
+  }).optional(),
   size: number().min(0).optional(),
   width: number().min(0).optional(),
   height: number().min(0).optional(),

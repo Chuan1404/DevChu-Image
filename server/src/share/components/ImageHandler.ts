@@ -48,7 +48,6 @@ export default class ImageHandler implements IImageHandler {
       "image/jpeg": "jpeg",
       "image/png": "png",
       "image/webp": "webp",
-      // Add more formats as needed
     };
 
     const resizedImageBuffer = await sharp(file.buffer)
@@ -72,7 +71,6 @@ export default class ImageHandler implements IImageHandler {
       "image/jpeg": "jpeg",
       "image/png": "png",
       "image/webp": "webp",
-      // Add more formats as needed
     };
 
     const resizedImageBuffer = await sharp(file.buffer)

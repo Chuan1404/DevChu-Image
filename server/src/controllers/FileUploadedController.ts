@@ -79,9 +79,23 @@ export class FileUploadedController {
       return;
     }
 
-    let cond = FileUploadedCondSchema.parse(req.query);
-    let result = await this.service.findAll(cond, paging);
+    // Validate query
+    const query: any = { ...req.query };
 
+    if (query.fromPrice || query.toPrice) {
+      query.price = {
+        ...(query.fromPrice && { $gte: Number(query.fromPrice) }),
+        ...(query.toPrice && { $lte: Number(query.toPrice) }),
+      };
+      delete query.fromPrice;
+      delete query.toPrice;
+    }
+
+    // Query repository
+    const cond = FileUploadedCondSchema.parse(query);
+    const result = await this.service.findAll(cond, paging);
+
+    console.log(query)
     res.status(200).json({
       data: result,
       paging,
