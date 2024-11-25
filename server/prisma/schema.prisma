@@ -24,7 +24,6 @@ model User {
   receipts Receipt[]
   tokens RefreshToken[]
   rights UserRight[]
-
   verificationCodes VerificationCode[]
 }
 
@@ -111,8 +110,6 @@ model UserRight {
 
   user       User       @relation(fields: [userId], references: [id])
   file       FileUploaded @relation(fields: [fileId], references: [id])
-
-  @@map("UserRight")
 }
 
 model VerificationCode {
@@ -124,8 +121,6 @@ model VerificationCode {
   updatedAt  DateTime @updatedAt
 
   user       User       @relation(fields: [userId], references: [id])
-
-  @@map("VerificationCode")
 }
 
 enum EUserRole {
