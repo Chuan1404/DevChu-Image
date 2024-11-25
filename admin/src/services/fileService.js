@@ -1,5 +1,5 @@
 import { ADMIN_API, API } from "../assets/js/constants";
-import { callWithToken, getData, postFile } from "../utils/fetchData";
+import { callWithToken, postFile } from "../utils/fetchData";
 
 const fileService = {
   getFiles(search = "") {
