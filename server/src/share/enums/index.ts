@@ -11,14 +11,14 @@ export enum EAccountStatus {
 }
 
 export enum EFileQuality {
+  DISPLAY = "DISPLAY",
   MEDIUM = "MEDIUM",
   HIGH = "HIGH",
-  DISPLAY = "DISPLAY",
   ROOT = "ROOT",
   AVATAR = "AVATAR",
 }
 
-export enum EQuantiryValue {
+export enum EQualityValue {
   MEDIUM = 1280,
   HIGH = 1920,
   DISPLAY = 640,

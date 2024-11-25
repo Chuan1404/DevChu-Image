@@ -9,7 +9,12 @@ import {
   UserUpdateSchema,
 } from "../models/types/User";
 import { IUserRepository } from "../repositories/interfaces/IUserRepository";
-import { EAccountStatus, EModelStatus, EUserRole } from "../share/enums";
+import {
+  EAccountStatus,
+  EFileQuality,
+  EModelStatus,
+  EUserRole,
+} from "../share/enums";
 import {
   ErrDataExisted,
   ErrDataInvalid,
@@ -19,20 +24,22 @@ import { IHashPassword } from "../share/interfaces/IHashPassword";
 import { PagingDTO } from "../share/types";
 import { IUserService } from "./interfaces/IUserService";
 import { v7 } from "uuid";
+import { IImageHandler } from "../share/interfaces/IImageHandler";
+import IUploader from "../share/interfaces/IUploader";
 
 @injectable()
 export class UserService implements IUserService {
   constructor(
     @inject("IUserRepository") private readonly repository: IUserRepository,
-    @inject("IHashPassword") private readonly passwordHasher: IHashPassword
+    @inject("IHashPassword") private readonly passwordHasher: IHashPassword,
+    @inject("IImageHandler")
+    private readonly imageHandler: IImageHandler,
+    @inject("IUploader")
+    private readonly uploader: IUploader
   ) {}
 
   async create(data: UserCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-    } = UserCreateSchema.safeParse(data);
-
+    const { success, data: parsedData } = UserCreateSchema.safeParse(data);
     if (!success) {
       throw ErrDataInvalid;
     }
@@ -61,11 +68,19 @@ export class UserService implements IUserService {
       updatedAt: new Date(),
     };
 
+    if (parsedData.avatar) {
+      const url = await this.uploader.uploadFile(
+        parsedData.avatar,
+        EFileQuality.AVATAR
+      );
+      newData.avatar = url
+    }
+
     await this.repository.create(newData);
 
     return newId;
   }
-  
+
   async update(id: string, data: UserUpdateDTO): Promise<boolean> {
     const {
       success,

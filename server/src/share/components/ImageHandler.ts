@@ -1,6 +1,6 @@
 import sharp, { Metadata } from "sharp";
+import { EQualityValue } from "../enums";
 import { IImageHandler } from "../interfaces/IImageHandler";
-import { EQuantiryValue } from "../enums";
 
 export default class ImageHandler implements IImageHandler {
   async checkFile(file: Express.Multer.File): Promise<boolean> {
@@ -16,9 +16,9 @@ export default class ImageHandler implements IImageHandler {
       throw new Error("Width or Height of image is not valid");
     }
 
-    if (height < EQuantiryValue.MINIMUM && width < EQuantiryValue.MINIMUM) {
+    if (height < EQualityValue.MINIMUM && width < EQualityValue.MINIMUM) {
       throw new Error(
-        `Minimum quality required is ${EQuantiryValue.MINIMUM} pixels. Current is ${width}x${height}`
+        `Minimum quality required is ${EQualityValue.MINIMUM} pixels. Current is ${width}x${height}`
       );
     }
 

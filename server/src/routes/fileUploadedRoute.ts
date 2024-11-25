@@ -1,7 +1,7 @@
 import express from "express";
 import { container } from "tsyringe";
-import { FileUploadedController } from "../controllers/FileUploadedController";
 import { upload } from "../configs/multer";
+import { FileUploadedController } from "../controllers/FileUploadedController";
 
 export default function setupFileUploadedRoute() {
   const fileController = container.resolve(FileUploadedController);
@@ -15,7 +15,7 @@ export default function setupFileUploadedRoute() {
     upload.single("file"),
     fileController.checkFile.bind(fileController)
   );
-  
+
   fileRoute.post(
     "/upload",
     upload.single("file"),

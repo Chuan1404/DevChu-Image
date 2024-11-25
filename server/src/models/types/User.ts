@@ -1,4 +1,4 @@
-import { array, date, nativeEnum, object, string, z } from "zod";
+import { any, array, date, nativeEnum, object, string, z } from "zod";
 import { EAccountStatus, EModelStatus, EUserRole } from "../../share/enums";
 
 export const UserSchema = z.object({
@@ -23,7 +23,7 @@ export const UserCreateSchema = object({
   password: string(),
   name: string(),
   role: nativeEnum(EUserRole).default(EUserRole.ROLE_CUSTOMER),
-  // avatar: string(),
+  avatar: any().optional(),
 });
 
 export const UserUpdateSchema = object({
@@ -31,6 +31,7 @@ export const UserUpdateSchema = object({
   accountStatus: nativeEnum(EAccountStatus).optional(),
   role: nativeEnum(EUserRole).optional(),
   status: nativeEnum(EModelStatus).optional(),
+  avatar: any().optional()
 });
 
 export const UserCondSchema = object({

@@ -8,5 +8,5 @@ export const ErrUnAuthentication = new Error("Unauthentication");
 export const ErrUnAuthorization = new Error("Unauthorization");
 
 // user
-export const ErrUnVertifyAccount = new Error("Account is unverified.");
+export const ErrUnVerifyAccount = new Error("Account is unverified.");
 export const ErrAccountBanned = new Error("Account is banned.");

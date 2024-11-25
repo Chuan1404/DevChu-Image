@@ -11,7 +11,7 @@ import {
   FileUploadedUpdateSchema,
 } from "../models/types/FileUploaded";
 import { IFileUploadedRepository } from "../repositories/interfaces/IFileUploadedRepository";
-import { EFileQuality, EModelStatus, EQuantiryValue } from "../share/enums";
+import { EFileQuality, EModelStatus, EQualityValue } from "../share/enums";
 import { ErrDataInvalid, ErrDataNotFound } from "../share/errors";
 import { IImageHandler } from "../share/interfaces/IImageHandler";
 import IUploader from "../share/interfaces/IUploader";
@@ -58,7 +58,7 @@ export class FileUploadedService implements IFileUploadedService {
       updatedAt: new Date(),
     };
 
-    let keys = Object.keys(EFileQuality);
+    const keys = Object.keys(EFileQuality);
 
     for (const key of keys) {
       let url: string, resizedFile: Express.Multer.File;
@@ -75,7 +75,7 @@ export class FileUploadedService implements IFileUploadedService {
         case EFileQuality.DISPLAY:
           resizedFile = await this.imageHandler.resizedFile(
             parsedData.file,
-            EQuantiryValue.DISPLAY
+            EQualityValue.DISPLAY
           );
           url = await this.uploader.uploadFile(
             resizedFile,
@@ -87,7 +87,7 @@ export class FileUploadedService implements IFileUploadedService {
         case EFileQuality.MEDIUM:
           resizedFile = await this.imageHandler.resizedFile(
             parsedData.file,
-            EQuantiryValue.MEDIUM
+            EQualityValue.MEDIUM
           );
           url = await this.uploader.uploadFile(
             resizedFile,
@@ -99,7 +99,7 @@ export class FileUploadedService implements IFileUploadedService {
         case EFileQuality.HIGH:
           resizedFile = await this.imageHandler.resizedFile(
             parsedData.file,
-            EQuantiryValue.HIGH
+            EQualityValue.HIGH
           );
           url = await this.uploader.uploadFile(resizedFile, EFileQuality.HIGH);
           newData.high = url;
@@ -113,11 +113,14 @@ export class FileUploadedService implements IFileUploadedService {
   }
 
   async update(id: string, data: FileUploadedUpdateDTO): Promise<boolean> {
-    const { success, data: parsedData, error } =
-      FileUploadedUpdateSchema.safeParse(data);
+    const {
+      success,
+      data: parsedData,
+      error,
+    } = FileUploadedUpdateSchema.safeParse(data);
 
     if (!success) {
-      console.log(error)
+      console.log(error);
       throw ErrDataInvalid;
     }
 

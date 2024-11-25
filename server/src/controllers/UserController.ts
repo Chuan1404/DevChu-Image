@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
-import { UserCondSchema } from "../models/types/User";
+import { UserCondSchema, UserCreateDTO } from "../models/types/User";
 import { IUserService } from "../services/interfaces/IUserService";
 import { ErrUnAuthentication } from "../share/errors";
 import { PagingSchema } from "../share/types";
@@ -11,7 +11,11 @@ export class UserController {
 
   async create(req: Request, res: Response) {
     try {
-      const result = await this.service.create(req.body);
+      const body: UserCreateDTO = {
+        ...req.body,
+        avatar: req.file
+      }
+      const result = await this.service.create(body);
       res.status(201).json({ data: result });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });

@@ -26,7 +26,7 @@ import {
   ErrDataInvalid,
   ErrDataNotFound,
   ErrLoginFail,
-  ErrUnVertifyAccount,
+  ErrUnVerifyAccount,
 } from "../share/errors";
 import { IComparePassword } from "../share/interfaces/IComparePassword";
 import { IHashPassword } from "../share/interfaces/IHashPassword";
@@ -141,7 +141,7 @@ export default class AuthService implements IAuthService {
     }
 
     if (user.accountStatus === EAccountStatus.UNVERIFIED) {
-      throw ErrUnVertifyAccount;
+      throw ErrUnVerifyAccount;
     }
 
     if (user.accountStatus === EAccountStatus.BANNED) {
