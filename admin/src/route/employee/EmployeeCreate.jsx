@@ -90,7 +90,7 @@ const EmployeeCreate = () => {
       formData.append("email", data.email);
       formData.append("password", data.password);
       formData.append("role", data.role);
-      // formData.append("avatar", avatar);
+      formData.append("avatar", avatar);
       const response = await userService.addUser(formData);
 
       if (!response.error) {
