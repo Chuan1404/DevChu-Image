@@ -19,17 +19,17 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  files    FileUploaded[]
-  comments Comment[]
-  receipts Receipt[]
-  tokens RefreshToken[]
-  rights UserRight[]
+  files             FileUploaded[]
+  comments          Comment[]
+  receipts          Receipt[]
+  tokens            RefreshToken[]
+  rights            UserRight[]
   verificationCodes VerificationCode[]
 }
 
 model FileUploaded {
   id        String       @id @default(uuid()) @map("_id")
-  userId  String?   @map("userId")
+  userId    String?      @map("userId")
   title     String?
   display   String?
   high      String?
@@ -44,83 +44,82 @@ model FileUploaded {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 
-  user    User?     @relation(fields: [userId], references: [id])
+  user     User?       @relation(fields: [userId], references: [id])
   comments Comment[]
   receipts Receipt[]
-  rights UserRight[]
+  rights   UserRight[]
 }
 
 model Comment {
-  id        String        @id @default(uuid()) @map("_id")
+  id        String       @id @default(uuid()) @map("_id")
   content   String
-  userId    String?       @map("userId")
-  fileId    String?       @map("fileId")
-  status    EModelStatus  @default(ACTIVE)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  userId    String?      @map("userId")
+  fileId    String?      @map("fileId")
+  status    EModelStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
-  user      User?         @relation(fields: [userId], references: [id])
-  file      FileUploaded? @relation(fields: [fileId], references: [id])
-
+  user User?         @relation(fields: [userId], references: [id])
+  file FileUploaded? @relation(fields: [fileId], references: [id])
 }
 
 model Receipt {
-  id         String       @id @default(uuid()) @map("_id")
+  id         String         @id @default(uuid()) @map("_id")
   method     EPaymentMethod @default(MOMO)
   methodId   String?
-  totalPrice Float         @default(0)
-  userId     String?       @map("userId")
-  fileId     String?       @map("fileId")
-  status     EModelStatus  @default(ACTIVE)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt 
+  totalPrice Float          @default(0)
+  userId     String?        @map("userId")
+  fileId     String?        @map("fileId")
+  status     EModelStatus   @default(ACTIVE)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
-  user       User?         @relation(fields: [userId], references: [id])
-  file       FileUploaded? @relation(fields: [fileId], references: [id])
+  user User?         @relation(fields: [userId], references: [id])
+  file FileUploaded? @relation(fields: [fileId], references: [id])
 }
 
 model RefreshToken {
   id         String       @id @default(uuid()) @map("_id")
   token      String
   expireDate DateTime
-  userId     String?      @map("userId") 
+  userId     String?      @map("userId")
   status     EModelStatus @default(ACTIVE)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 
-  user       User?        @relation(fields: [userId], references: [id]) 
+  user User? @relation(fields: [userId], references: [id])
 }
 
 model Tag {
-  id       String       @id @default(uuid()) @map("_id")
-  name     String
-  status   EModelStatus @default(ACTIVE)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id        String       @id @default(uuid()) @map("_id")
+  name      String
+  status    EModelStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 model UserRight {
-  id         String   @id @default(uuid()) @map("_id")
+  id         String       @id @default(uuid()) @map("_id")
   expireDate DateTime?
   userId     String
   fileId     String
   status     EModelStatus @default(ACTIVE)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 
-  user       User       @relation(fields: [userId], references: [id])
-  file       FileUploaded @relation(fields: [fileId], references: [id])
+  user User         @relation(fields: [userId], references: [id])
+  file FileUploaded @relation(fields: [fileId], references: [id])
 }
 
 model VerificationCode {
-  id         String   @id @default(uuid()) @map("_id")
-  value      String
-  userId     String
-  status     EModelStatus @default(ACTIVE)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String       @id @default(uuid()) @map("_id")
+  value     String
+  userId    String
+  status    EModelStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
-  user       User       @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 enum EUserRole {
