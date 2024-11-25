@@ -11,11 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Banner, MediaList, Tags } from "../components";
 import { fileService } from "../services";
-import queryLocation from "../utils/queryLocation";
-import { useDispatch, useSelector } from "react-redux";
 import { setOptions } from "../store/slices/searchSlice";
+import queryLocation from "../utils/queryLocation";
 
 export default function Home() {
   const dispatcher = useDispatch();
@@ -36,7 +36,6 @@ export default function Home() {
 
       let query = `?${queryLocation.toString(options)}`;
       let res = await fileService.getFiles(query);
-      console.log(res);
       if (!res.error) {
         setData(res.data);
       }
@@ -47,7 +46,7 @@ export default function Home() {
   const handlePriceFilter = () => {
     let fromPrice = fromPriceRef.current.value;
     let toPrice = toPriceRef.current.value;
-    if (fromPrice != "" && toPrice != "" && fromPrice > toPrice)
+    if (Number(fromPrice) > Number(toPrice))
       [fromPrice, toPrice] = [toPrice, fromPrice];
 
     fromPriceRef.current.value = fromPrice;
@@ -83,7 +82,7 @@ export default function Home() {
               }}
             >
               <Typography variant="h4" mb={2} color={"primary"}>
-                Chủ đề phổ biến
+                Most popular
               </Typography>
               <Tags options={options} setOptions={handleChange} />
             </Stack>
@@ -103,7 +102,7 @@ export default function Home() {
                 mr={{ xs: 2, lg: 0 }}
               >
                 <Typography variant="h6" mb={2}>
-                  Giá
+                  Price
                 </Typography>
                 <Stack direction={"row"} alignItems={"center"} spacing={2}>
                   <TextField
@@ -121,7 +120,7 @@ export default function Home() {
                   />
                 </Stack>
                 <Button sx={{ marginTop: 2 }} onClick={handlePriceFilter}>
-                  Xác nhận
+                  Search
                 </Button>
               </Box>
 

@@ -14,8 +14,9 @@ import styled from "styled-components";
 import useQuery from "../hooks/useQuery";
 import commentService from "../services/commentService";
 
-export default function CommnetBox({ fileId, user }) {
+export default function CommentBox({ fileId, user }) {
   const [content, setContent] = useState("");
+  // const user = useSelector((store) => store.auth.user);
 
   const {
     data: comments,
@@ -26,7 +27,14 @@ export default function CommnetBox({ fileId, user }) {
     const response = await commentService.addComment(fileId, content);
 
     if (!response.error) {
-      setComments({ ...comments, content: [response, ...comments.content] });
+      if(!content) return
+      const newComment = {
+        id: response.data,
+        content,
+        createAt: new Date(),
+        user: user,
+      };
+      setComments({ ...comments, data: [...comments.data, newComment] });
       setContent("");
     }
   };
@@ -81,7 +89,7 @@ export default function CommnetBox({ fileId, user }) {
   );
 }
 const StyledTextarea = styled(TextareaAutosize)(({ theme }) => {
-  const mytheme = useTheme();
+  const myTheme = useTheme();
   return `
         width: 100%;
         font-family: IBM Plex Sans, sans-serif;
@@ -97,11 +105,11 @@ const StyledTextarea = styled(TextareaAutosize)(({ theme }) => {
         resize: none;
       
         &:hover {
-          border-color: ${mytheme.palette.primary[400]};
+          border-color: ${myTheme.palette.primary[400]};
         }
         &:focus {
-            border-color: ${mytheme.palette.primary[400]};
-            box-shadow: 0 0 0 3px ${mytheme.palette.primary[200]};
+            border-color: ${myTheme.palette.primary[400]};
+            box-shadow: 0 0 0 3px ${myTheme.palette.primary[200]};
           }
         
           // firefox

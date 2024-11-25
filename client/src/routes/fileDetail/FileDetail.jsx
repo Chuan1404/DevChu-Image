@@ -15,16 +15,16 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import ImageZoom from "react-image-zooom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import loading from "../../assets/images/loading2.svg";
+import { CommentBox } from "../../components";
 import useQuery from "../../hooks/useQuery";
 import { fileService } from "../../services";
 import { addFile } from "../../store/slices/cartSlice";
 import { openAlert, openAuth } from "../../store/slices/pageSlice";
-import { CommentBox } from "../../components";
-import { useEffect } from "react";
 
 export default function FileDetail() {
   const dispatch = useDispatch();
@@ -37,9 +37,9 @@ export default function FileDetail() {
 
   const addProductToCart = () => {
     if (isLogin) {
-      dispatch(addFile({ userId: user.id, file: file }));
+      dispatch(addFile({ userId: user.id, file: file.data }));
       dispatch(
-        openAlert({ type: "success", message: "Đã thêm sản phẩm vào giỏ hàng" })
+        openAlert({ type: "success", message: "Add product into cart successfully" })
       );
     } else {
       dispatch(openAuth());
@@ -53,7 +53,7 @@ export default function FileDetail() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
-  console.log(file?.data)
+  console.log(file?.data);
   return (
     <main id="filepage">
       <Container sx={{ pt: 7 }}>
@@ -104,12 +104,12 @@ export default function FileDetail() {
                         <TableRow>
                           <TableCell>
                             <Typography variant="h6" component={"span"}>
-                              Thuộc tính
+                              Attribute
                             </Typography>
                           </TableCell>
                           <TableCell>
                             <Typography variant="h6" component={"span"}>
-                              Giá trị
+                              Value
                             </Typography>
                           </TableCell>
                         </TableRow>
@@ -118,7 +118,7 @@ export default function FileDetail() {
                       <TableBody>
                         <TableRow>
                           <TableCell>
-                            <Typography>Giá tiền</Typography>
+                            <Typography>Price</Typography>
                           </TableCell>
                           <TableCell>
                             <Typography variant="body1">
@@ -131,7 +131,7 @@ export default function FileDetail() {
                         </TableRow>
                         <TableRow>
                           <TableCell>
-                            <Typography>Độ phân giải</Typography>
+                            <Typography>Resolution</Typography>
                           </TableCell>
                           <TableCell>
                             <Typography variant="body1">
@@ -141,15 +141,17 @@ export default function FileDetail() {
                         </TableRow>
                         <TableRow>
                           <TableCell>
-                            <Typography>Loại file</Typography>
+                            <Typography>File type</Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography variant="body1">{file?.data?.fileType}</Typography>
+                            <Typography variant="body1">
+                              {file?.data?.fileType}
+                            </Typography>
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>
-                            <Typography>Kích thước</Typography>
+                            <Typography>Size</Typography>
                           </TableCell>
                           <TableCell>
                             <Typography variant="body1">
@@ -186,7 +188,7 @@ export default function FileDetail() {
                     startIcon={<AddShoppingCartIcon />}
                     onClick={addProductToCart}
                   >
-                    Thêm vào giỏ hàng
+                    Add to cart
                   </Button>
                 </Box>
               </Grid>
@@ -201,7 +203,7 @@ export default function FileDetail() {
                       size="small"
                       sx={{ width: "fit-content", alignSelf: "center" }}
                     >
-                      <Typography>Đăng nhập để xem bình luận</Typography>
+                      <Typography>Login to view comment</Typography>
                     </Button>
                   )}
                 </Stack>

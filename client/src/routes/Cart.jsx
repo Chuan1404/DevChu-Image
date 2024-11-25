@@ -22,10 +22,12 @@ const Cart = () => {
       dispatch(closeAuth());
     }
   }, [isLogin]);
+
+  console.log(cart)
   return (
     <main id="cart_page">
       <Container sx={{ pt: 7 }}>
-        <Typography variant={"h6"} marginBottom={2}>{`Giỏ hàng của bạn: (${
+        <Typography variant={"h6"} marginBottom={2}>{`Your cart: (${
           cart?.length || 0
         })`}</Typography>
         <Grid container spacing={2}>
@@ -46,7 +48,7 @@ const Cart = () => {
                 justifyContent={"space-between"}
                 marginBottom={2}
               >
-                <Typography variant="h6">Tổng thanh toán:</Typography>
+                <Typography variant="h6">Total:</Typography>
                 <Typography variant="h6">
                   {cart?.length > 0 &&
                     cart
@@ -59,13 +61,13 @@ const Cart = () => {
               </Stack>
               <Link to={"/payment"}>
                 <Button variant="contained" fullWidth sx={{ marginBottom: 1 }}>
-                  Tiếp tục thanh toán
+                  Buy
                 </Button>
               </Link>
 
               <Link to={"/"}>
                 <Typography textAlign={"center"} color={"blue"}>
-                  Tiếp tục mua sắm
+                  Continue shopping
                 </Typography>
               </Link>
             </Box>
