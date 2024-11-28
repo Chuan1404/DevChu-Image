@@ -24,10 +24,10 @@ export default function CommentBox({ fileId, user }) {
     fetching: isLoading,
   } = useQuery(() => commentService.getCommentOfFile(fileId));
   const handleAddComment = async () => {
+    if(!content) return
     const response = await commentService.addComment(fileId, content);
 
     if (!response.error) {
-      if(!content) return
       const newComment = {
         id: response.data,
         content,

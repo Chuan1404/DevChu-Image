@@ -21,8 +21,8 @@ export default function Home() {
   const dispatcher = useDispatch();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const fromPriceRef = useRef(null);
-  const toPriceRef = useRef(null);
+  const minRef = useRef(null);
+  const maxRef = useRef(null);
   const options = useSelector((store) => store.search.options);
 
   const handleChange = (payload) => {
@@ -44,27 +44,24 @@ export default function Home() {
   }, [options]);
 
   const handlePriceFilter = () => {
-    let fromPrice = fromPriceRef.current.value;
-    let toPrice = toPriceRef.current.value;
-    if (Number(fromPrice) > Number(toPrice))
-      [fromPrice, toPrice] = [toPrice, fromPrice];
+    let min = minRef.current.value;
+    let max = maxRef.current.value;
+    if (Number(min) > Number(max)) [min, max] = [max, min];
 
-    fromPriceRef.current.value = fromPrice;
-    toPriceRef.current.value = toPrice;
+    minRef.current.value = min;
+    maxRef.current.value = max;
     handleChange({
       ...options,
-      fromPrice,
-      toPrice,
+      min,
+      max,
     });
   };
 
   const handleTypeFilter = (value, isCheck) => {
-    isCheck
-      ? handleChange({ ...options, type: [...options.type, value] })
-      : handleChange({
-          ...options,
-          type: options.type.filter((item) => item != value),
-        });
+    const filteredType = isCheck
+      ? [...options.type, value]
+      : options.type.filter((item) => item != value);
+    handleChange({ ...options, type: filteredType });
   };
 
   return (
@@ -109,14 +106,14 @@ export default function Home() {
                     type="number"
                     size="small"
                     placeholder="VNĐ"
-                    inputRef={fromPriceRef}
+                    inputRef={minRef}
                   />
                   <Typography>-</Typography>
                   <TextField
                     type="number"
                     size="small"
                     placeholder="VNĐ"
-                    inputRef={toPriceRef}
+                    inputRef={maxRef}
                   />
                 </Stack>
                 <Button sx={{ marginTop: 2 }} onClick={handlePriceFilter}>
@@ -128,7 +125,7 @@ export default function Home() {
 
               <Box bgcolor={"#fff"} p={2} borderRadius={"1rem"} width={"100%"}>
                 <Typography variant="h6" mb={2}>
-                  Loại file
+                  File type
                 </Typography>
                 <Stack direction={"row"} alignItems={"center"} spacing={2}>
                   <FormGroup>
@@ -137,7 +134,7 @@ export default function Home() {
                         <Checkbox
                           defaultChecked
                           onChange={(e) =>
-                            handleTypeFilter("PNG", e.target.checked)
+                            handleTypeFilter("png", e.target.checked)
                           }
                         />
                       }
@@ -148,11 +145,22 @@ export default function Home() {
                         <Checkbox
                           defaultChecked
                           onChange={(e) =>
-                            handleTypeFilter("JPEG", e.target.checked)
+                            handleTypeFilter("jpeg", e.target.checked)
                           }
                         />
                       }
                       label="JPEG"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          onChange={(e) =>
+                            handleTypeFilter("jpg", e.target.checked)
+                          }
+                        />
+                      }
+                      label="JPG"
                     />
                   </FormGroup>
                 </Stack>

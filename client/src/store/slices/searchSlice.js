@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { FILE_TYPES } from "../../assets/js/constants";
 
 const initialState = {
   options: {
     kw: "",
     page: 1,
-    type: ["PNG", "JPEG"]
+    type: Object.values(FILE_TYPES)
   },
 };
 
