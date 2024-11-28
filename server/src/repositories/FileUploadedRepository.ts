@@ -5,10 +5,10 @@ import {
   FileUploadedCondDTO,
   FileUploadedUpdateDTO,
 } from "../models/types/FileUploaded";
-import { MongoRepository } from "../share/components/MongoRepository";
+import { PrismaRepository } from "../share/components/PrismaRepository";
 
 @injectable()
-export class FileUploadedRepository extends MongoRepository<
+export class FileUploadedRepository extends PrismaRepository<
   FileUploaded,
   FileUploadedCondDTO,
   FileUploadedUpdateDTO

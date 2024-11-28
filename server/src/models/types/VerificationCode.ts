@@ -3,7 +3,7 @@ import { EModelStatus } from "../../share/enums";
 
 
 export const VerificationCodeSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   value: z.string(),
   userId: z.string(),
   status: z.nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
@@ -13,7 +13,7 @@ export const VerificationCodeSchema = z.object({
 
 export const VerificationCodeCreateSchema = z.object({
   value: z.string(),
-  userId: z.string().uuid(),
+  userId: z.string(),
 })
 
 export const VerificationCodeUpdateSchema = z.object({

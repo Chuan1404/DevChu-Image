@@ -1,14 +1,14 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_SERVER")
-}
-
 model User {
-  id            String         @id @default(uuid()) @map("_id")
+  id            String         @id @map("_id")
   name          String
   email         String         @unique
   password      String
@@ -25,10 +25,12 @@ model User {
   tokens            RefreshToken[]
   rights            UserRight[]
   verificationCodes VerificationCode[]
+
+  @@map("users")
 }
 
 model FileUploaded {
-  id        String       @id @default(uuid()) @map("_id")
+  id        String       @id @map("_id")
   userId    String?      @map("userId")
   title     String?
   display   String?
@@ -48,10 +50,12 @@ model FileUploaded {
   comments Comment[]
   receipts Receipt[]
   rights   UserRight[]
+
+  @@map("fileuploadeds")
 }
 
 model Comment {
-  id        String       @id @default(uuid()) @map("_id")
+  id        String       @id @map("_id")
   content   String
   userId    String?      @map("userId")
   fileId    String?      @map("fileId")
@@ -61,10 +65,12 @@ model Comment {
 
   user User?         @relation(fields: [userId], references: [id])
   file FileUploaded? @relation(fields: [fileId], references: [id])
+
+  @@map("comments")
 }
 
 model Receipt {
-  id         String         @id @default(uuid()) @map("_id")
+  id         String         @id @map("_id")
   method     EPaymentMethod @default(MOMO)
   methodId   String?
   totalPrice Float          @default(0)
@@ -76,30 +82,35 @@ model Receipt {
 
   user User?         @relation(fields: [userId], references: [id])
   file FileUploaded? @relation(fields: [fileId], references: [id])
+
+  @@map("receipts")
 }
 
 model RefreshToken {
-  id         String       @id @default(uuid()) @map("_id")
+  id         String       @id @map("_id")
   token      String
-  expireDate DateTime
   userId     String?      @map("userId")
   status     EModelStatus @default(ACTIVE)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 
   user User? @relation(fields: [userId], references: [id])
+
+  @@map("refreshtokens")
 }
 
 model Tag {
-  id        String       @id @default(uuid()) @map("_id")
+  id        String       @id @map("_id")
   name      String
   status    EModelStatus @default(ACTIVE)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+
+  @@map("tags")
 }
 
 model UserRight {
-  id         String       @id @default(uuid()) @map("_id")
+  id         String       @id @map("_id")
   expireDate DateTime?
   userId     String
   fileId     String
@@ -109,10 +120,12 @@ model UserRight {
 
   user User         @relation(fields: [userId], references: [id])
   file FileUploaded @relation(fields: [fileId], references: [id])
+
+  @@map("userrights")
 }
 
 model VerificationCode {
-  id        String       @id @default(uuid()) @map("_id")
+  id        String       @id @map("_id")
   value     String
   userId    String
   status    EModelStatus @default(ACTIVE)
@@ -120,6 +133,8 @@ model VerificationCode {
   updatedAt DateTime     @updatedAt
 
   user User @relation(fields: [userId], references: [id])
+
+  @@map("verificationcodes")
 }
 
 enum EUserRole {

@@ -148,7 +148,6 @@ export class FileUploadedService implements IFileUploadedService {
     paging: PagingDTO
   ): Promise<FileUploaded[]> {
     let data = await this.repository.findAll(cond, paging);
-
     return data ? data.map((item) => FileUploadedSchema.parse(item)) : [];
   }
 

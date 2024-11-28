@@ -2,7 +2,7 @@ import { z } from "zod";
 import { EModelStatus } from "../../share/enums";
 
 export const TagSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   name: z.string(),
   status: z.nativeEnum(EModelStatus),
   createdAt: z.date(),

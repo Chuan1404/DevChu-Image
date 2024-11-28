@@ -1,14 +1,14 @@
 import { injectable } from "tsyringe";
+import { modelName } from "../models/interfaces/IComment";
 import {
   Comment,
   CommentCondDTO,
   CommentUpdateDTO,
 } from "../models/types/Comment";
-import { MongoRepository } from "../share/components/MongoRepository";
-import { modelName } from "../models/interfaces/IComment";
+import { PrismaRepository } from "../share/components/PrismaRepository";
 
 @injectable()
-export class CommentRepository extends MongoRepository<
+export class CommentRepository extends PrismaRepository<
   Comment,
   CommentCondDTO,
   CommentUpdateDTO

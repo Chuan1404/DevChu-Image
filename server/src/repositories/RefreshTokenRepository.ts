@@ -5,8 +5,9 @@ import {
   RefreshTokenUpdateDTO,
 } from "../models/types/RefreshToken";
 import { MongoRepository } from "../share/components/MongoRepository";
+import { PrismaRepository } from "../share/components/PrismaRepository";
 
-export class RefreshTokenRepository extends MongoRepository<
+export class RefreshTokenRepository extends PrismaRepository<
   RefreshToken,
   RefreshTokenCondDTO,
   RefreshTokenUpdateDTO

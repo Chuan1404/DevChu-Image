@@ -4,9 +4,9 @@ import {
   VerificationCodeCondDTO,
   VerificationCodeUpdateDTO,
 } from "../models/types/VerificationCode";
-import { MongoRepository } from "../share/components/MongoRepository";
+import { PrismaRepository } from "../share/components/PrismaRepository";
 
-export class VerificationCodeRepository extends MongoRepository<
+export class VerificationCodeRepository extends PrismaRepository<
   VerificationCode,
   VerificationCodeCondDTO,
   VerificationCodeUpdateDTO

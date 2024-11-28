@@ -2,7 +2,7 @@ import { any, array, date, nativeEnum, number, object, string, z } from "zod";
 import { EModelStatus } from "../../share/enums";
 
 export const FileUploadedSchema = z.object({
-  id: string().uuid(),
+  id: string(),
   title: string().min(2),
   price: number().min(0),
   root: string(),

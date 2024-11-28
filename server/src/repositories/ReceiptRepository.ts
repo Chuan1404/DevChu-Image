@@ -4,9 +4,9 @@ import {
   ReceiptCondDTO,
   ReceiptUpdateDTO,
 } from "../models/types/Receipt";
-import { MongoRepository } from "../share/components/MongoRepository";
+import { PrismaRepository } from "../share/components/PrismaRepository";
 
-export class ReceiptRepository extends MongoRepository<
+export class ReceiptRepository extends PrismaRepository<
   Receipt,
   ReceiptCondDTO,
   ReceiptUpdateDTO

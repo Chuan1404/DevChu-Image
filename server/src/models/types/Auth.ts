@@ -24,7 +24,7 @@ export const AuthRegisterSchema = z.object({
 });
 
 export const AuthPayloadSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   email: z.string(),
   role: z.nativeEnum(EUserRole),
 });

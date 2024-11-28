@@ -3,28 +3,28 @@ import { EModelStatus } from "../../share/enums";
 
 
 export const RefreshTokenSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   token: z.string(),
   status: z.nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
-  userId: z.string().uuid(),
+  userId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
 
 export const RefreshTokenCreateSchema = z.object({
   token: z.string(),
-  userId: z.string().uuid(),
+  userId: z.string(),
 })
 
 export const RefreshTokenUpdateSchema = z.object({
   token: z.string().optional(),
-  userId: z.string().uuid().optional(),
+  userId: z.string().optional(),
   status: z.nativeEnum(EModelStatus).optional(),
 })
 
 export const RefreshTokenCondSchema = z.object({
   token: z.string().optional(),
-  userId: z.string().uuid().optional(),
+  userId: z.string().optional(),
   status: z.nativeEnum(EModelStatus).optional(),
 })
 
