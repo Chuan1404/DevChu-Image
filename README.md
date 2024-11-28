@@ -1,20 +1,39 @@
 # DEVCHU IMAGE
 
-# 1. Introduction
+## 1. Introduction
 
-DevChu Image is a web-based platform designed for trading image files. The system uses ReactJS for the frontend, with Node.js, Typescript, ExpressJS for the backend, and MongoDB for data storage. It follows a layered architecture, applying Object-Oriented Programming (OOP) techniques and adhering to SOLID principles.
+DevChu Image is a web-based platform designed for trading image files. The system is built with **ReactJS** for the frontend and **Node.js** with **TypeScript** for the backend, utilizing **ExpressJS** and **MongoDB** for data storage. It follows a layered architecture, applying Object-Oriented Programming (OOP) techniques and adhering to SOLID principles for maintainable and scalable development.
 
-# 2. Features
+---
 
-## 2.1. Front-end
+## 2. Features
 
-- Main tech: ReactJs, SCSS, MUI
+### 2.1. Front-end
 
-## 2.2. Back-end
+- **Main Tech Stack:** ReactJS, SCSS, Material-UI (MUI)
+- **Key Features:**
+  - Responsive and user-friendly interface.
+  - Advanced filtering options:
+    - Filter products by price range, file type, and file name.
+    - Provide seamless search and browsing experiences.
 
-- Main tech: Nodejs, ExpressJs, TypeScript, Prisma (ORM framework)
-- Database: MongoDB
-- Implemented a modular, scalable DI (Dependency Injection) architecture using tools like tsyringe in Node.js
-- User authentication and authorization using JWT and integrated email verification flow using Google's secure account verification codes.
-- Provides features to verify file quality, such as image quality checks, file type validation and image resizing.
-- Securely manages image access and storage using Amazon S3.
+---
+
+### 2.2. Back-end
+
+- **Main Tech Stack:** Node.js, ExpressJS, TypeScript, Prisma (ORM framework)
+- **Database:** MongoDB
+- **Key Features:**
+  1. **Architecture & Scalability:**
+     - Modular and scalable **Dependency Injection (DI)** architecture using **Tsyringe**.
+  2. **Authentication & Security:**
+     - User authentication and authorization via **JWT**.
+     - Integrated **email verification** with Google's secure account verification codes.
+  3. **Image Quality & Validation:**
+     - File quality verification:
+       - **Image quality checks**
+       - File type validation
+       - Automated **image resizing**.
+  4. **Cloud Storage:**
+     - Secure and efficient image storage and management using **Amazon S3**.
+---
