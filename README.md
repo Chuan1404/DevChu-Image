@@ -12,7 +12,7 @@ DevChu Image is a web-based platform designed for trading image files. The syste
 
 ## 2.2. Back-end
 
-- Main tech: Nodejs, ExpressJs, TypeScript
+- Main tech: Nodejs, ExpressJs, TypeScript, Prisma (ORM framework)
 - Database: MongoDB
 - Implemented a modular, scalable DI (Dependency Injection) architecture using tools like tsyringe in Node.js
 - User authentication and authorization using JWT and integrated email verification flow using Google's secure account verification codes.
