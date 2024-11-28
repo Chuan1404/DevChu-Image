@@ -1,9 +1,8 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { EModelStatus } from "../enums";
 import { IRepository } from "../interfaces/IRepository";
 import { PagingDTO } from "../types";
-
-const prisma = new PrismaClient();
+import { convertQuery } from "../utils";
 
 export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
@@ -41,8 +40,10 @@ export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
       status: { not: EModelStatus.DELETED },
     };
 
+    const query = convertQuery(condWithStatus)
+
     const rows = await (this.prisma as any)[this.modelName].findMany({
-      where: condWithStatus,
+      where: query,
       skip: paging ? (paging.page - 1) * paging.limit : undefined,
       take: paging ? paging.limit : undefined,
     });

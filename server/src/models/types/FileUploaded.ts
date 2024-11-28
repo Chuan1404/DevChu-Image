@@ -35,19 +35,18 @@ export const FileUploadedUpdateSchema = object({
 });
 
 export const FileUploadedCondSchema = object({
-  id: object({ $in: array(string()) }).optional(),
+  id: array(string()).optional(),
   title: string().optional(),
-  // price: number().optional(),
   price: object({
-    $lte: number().optional(),
-    $gte: number().optional(),
+    gte: number().min(0).optional(),
+    lte: number().min(0).optional(),
   }).optional(),
   size: number().min(0).optional(),
   width: number().min(0).optional(),
   height: number().min(0).optional(),
   userId: string().optional(),
   status: nativeEnum(EModelStatus).optional(),
-  fileType: string().optional(),
+  fileType: array(string()).optional(),
 });
 
 export type FileUploaded = z.infer<typeof FileUploadedSchema>;

@@ -86,8 +86,8 @@ export class CommentService implements ICommentService {
     const userIds = [...new Set(comments.map((comment) => comment.userId))];
     const fileIds = [...new Set(comments.map((comment) => comment.fileId))];
 
-    const users = await this.userRepository.findAll({ id: { $in: userIds } });
-    const files = await this.fileRepository.findAll({ id: { $in: fileIds } });
+    const users = await this.userRepository.findAll({ id: userIds });
+    const files = await this.fileRepository.findAll({ id: fileIds });
 
     // convert list to hashmap
     const userMap = users.reduce((acc: { [key: string]: any }, user) => {

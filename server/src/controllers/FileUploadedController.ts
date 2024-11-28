@@ -81,21 +81,25 @@ export class FileUploadedController {
 
     // Validate query
     const query: any = { ...req.query };
-
-    if (query.fromPrice || query.toPrice) {
+    
+    if (query.min || query.max) {
       query.price = {
-        ...(query.fromPrice && { $gte: Number(query.fromPrice) }),
-        ...(query.toPrice && { $lte: Number(query.toPrice) }),
+        ...(query.min && { gte: Number(query.min) }),
+        ...(query.max && { lte: Number(query.max) }),
       };
-      delete query.fromPrice;
-      delete query.toPrice;
+      delete query.min;
+      delete query.max;
     }
 
+    if(query.type) {
+      query.fileType = query.type.split(',')
+      delete query.type
+    }
+    console.log(query)
     // Query repository
     const cond = FileUploadedCondSchema.parse(query);
     const result = await this.service.findAll(cond, paging);
 
-    console.log(query)
     res.status(200).json({
       data: result,
       paging,

@@ -9,9 +9,7 @@ export const UserSchema = z.object({
   avatar: string(),
   status: nativeEnum(EModelStatus).default(EModelStatus.ACTIVE),
 
-  accountStatus: z
-    .nativeEnum(EAccountStatus)
-    .default(EAccountStatus.UNVERIFIED),
+  accountStatus: nativeEnum(EAccountStatus).default(EAccountStatus.UNVERIFIED),
   role: nativeEnum(EUserRole).default(EUserRole.ROLE_CUSTOMER),
 
   createdAt: date(),
@@ -31,11 +29,11 @@ export const UserUpdateSchema = object({
   accountStatus: nativeEnum(EAccountStatus).optional(),
   role: nativeEnum(EUserRole).optional(),
   status: nativeEnum(EModelStatus).optional(),
-  avatar: any().optional()
+  avatar: any().optional(),
 });
 
 export const UserCondSchema = object({
-  id: object({ $in: array(string()) }).optional(),
+  id: array(string()).optional(),
   email: string().optional(),
   name: string().optional(),
   accountStatus: nativeEnum(EAccountStatus).optional(),
