@@ -6,7 +6,7 @@ DevChu Image is a web-based platform designed for trading image files. The syste
 
 ### 1.1. Models
 
-#### user
+#### Users Table
 | Column        | Data Type                                 | Description                                      |
 |---------------|-------------------------------------------|--------------------------------------------------|
 | id            | CHAR(36)                                  | Primary key (unique identifier)                  |
@@ -18,6 +18,27 @@ DevChu Image is a web-based platform designed for trading image files. The syste
 | role          | ENUM ('ROLE_CUSTOMER', 'ROLE_ADMIN', 'ROLE_EDITOR') | User role                              |
 | createdAt     | TIMESTAMP                                 | Timestamp of creation                            |
 | updatedAt     | TIMESTAMP                                 | Timestamp of last update                         |
+
+#### Uploaded_files Table
+| Column     | Data Type           | Description                                      |
+|------------|---------------------|--------------------------------------------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  |
+| title      | VARCHAR(100)        | File title (unique)                              |
+| price      | DOUBLE              | File price                                       |
+| root       | VARCHAR(255)        | Path for the root image                          |
+| display    | VARCHAR(255)        | Path for the display image                       |
+| medium     | VARCHAR(255)        | Path for the medium image                        |
+| high       | VARCHAR(255)        | Path for the high-quality image                  |
+| size       | DECIMAL(4, 2)       | File size                                        |
+| width      | SMALLINT UNSIGNED   | Image width                                      |
+| height     | SMALLINT UNSIGNED   | Image height                                     |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | File status      |
+| file_type  | ENUM ("jpeg", "jpg", "png") | Image file type                                |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
+
+
 
 ---
 
