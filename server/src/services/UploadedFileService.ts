@@ -39,7 +39,7 @@ export class UploadedFileService implements IUploadedFileService {
 
     const metadata = await sharp(parsedData.file.buffer).metadata();
 
-    let newId = v7();
+    const newId = v7();
     const newData: UploadedFile = {
       id: newId,
       root: "",
@@ -124,7 +124,7 @@ export class UploadedFileService implements IUploadedFileService {
       throw ErrDataInvalid;
     }
 
-    let refreshToken = await this.repository.find(id);
+    const refreshToken = await this.repository.find(id);
 
     if (!refreshToken || refreshToken.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;
@@ -134,7 +134,7 @@ export class UploadedFileService implements IUploadedFileService {
   }
 
   async find(id: string): Promise<UploadedFile> {
-    let data = await this.repository.find(id);
+    const data = await this.repository.find(id);
 
     if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
@@ -147,12 +147,17 @@ export class UploadedFileService implements IUploadedFileService {
     cond: UploadedFileCondDTO,
     paging: PagingDTO
   ): Promise<UploadedFile[]> {
-    let data = await this.repository.findAll(cond, paging);
+    const data = await this.repository.findAll(cond, paging);
     return data ? data.map((item) => UploadedFileSchema.parse(item)) : [];
   }
 
+  async search(kw: string, paging: PagingDTO): Promise<string[]> {
+    const data = await this.repository.search(kw, paging);
+    return data;
+  }
+
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
-    let data = await this.repository.find(id);
+    const data = await this.repository.find(id);
     if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }

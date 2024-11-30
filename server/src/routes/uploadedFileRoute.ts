@@ -7,8 +7,9 @@ export default function setupUploadedFileRoute() {
   const fileController = container.resolve(UploadedFileController);
   const fileRoute = express.Router();
 
-  fileRoute.get("/", fileController.findAll.bind(fileController));
+  fileRoute.get("/search", fileController.search.bind(fileController));
   fileRoute.get("/:id", fileController.find.bind(fileController));
+  fileRoute.get("/", fileController.findAll.bind(fileController));
 
   fileRoute.post(
     "/check",

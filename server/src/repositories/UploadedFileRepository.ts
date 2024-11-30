@@ -54,4 +54,18 @@ export class UploadedFileRepository extends PrismaRepository<
 
     return rows as UploadedFile[];
   }
+
+  async search(kw: string, paging: PagingDTO): Promise<string[]> {
+    const rows = await prisma.uploadedFile.findMany({
+      where: {
+        title: {
+          startsWith: kw,
+        },
+      },
+      skip: paging ? (paging.page - 1) * paging.limit : undefined,
+      take: paging ? paging.limit : undefined,
+    });
+
+    return rows.map((item) => item.title as string);
+  }
 }

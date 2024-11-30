@@ -28,6 +28,26 @@ export class UploadedFileController {
     }
   }
 
+  async search(req: Request, res: Response) {
+    const { success, data: paging, error } = PagingSchema.safeParse(req.query);
+
+    if (!success) {
+      res.status(400).json({
+        error: error.message,
+      });
+      return;
+    }
+
+    const kw: string = req.query.kw as string
+
+    // Query repository
+    const result = await this.service.search(kw, paging);
+    res.status(200).json({
+      data: result,
+      paging,
+    });
+  }
+
   async upload(req: Request, res: Response) {
     try {
       let body: UploadedFileCreateDTO = {

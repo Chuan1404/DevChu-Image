@@ -5,6 +5,7 @@ import {
   UploadedFileUpdateDTO,
 } from "../../models/types/UploadedFile";
 import { IService } from "../../share/interfaces/IService";
+import { PagingDTO } from "../../share/types";
 
 export interface IUploadedFileService
   extends IService<
@@ -14,4 +15,5 @@ export interface IUploadedFileService
     UploadedFileUpdateDTO
   > {
     checkBeforeCreate(file: Express.Multer.File): Promise<boolean>;
+    search(kw: string, paging: PagingDTO): Promise<string[]>
   }
