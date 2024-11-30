@@ -9,7 +9,7 @@ import { IComparePassword } from "../../share/interfaces/IComparePassword";
 import { IHashPassword } from "../../share/interfaces/IHashPassword";
 import setupAuthDI from "./authDI";
 import setupCommentDI from "./commentDI";
-import setupFileUploadedDI from "./fileUploadedDI";
+import setupUploadedFileDI from "./fileUploadedDI";
 import setupRefreshTokenDI from "./refreshTokenDI";
 import setupTagDI from "./tagDI";
 import setupUserDI from "./userDI";
@@ -39,7 +39,7 @@ const setupDI = () => {
     useClass: AWS,
   });
   setupUserDI();
-  setupFileUploadedDI();
+  setupUploadedFileDI();
   setupCommentDI();
   setupRefreshTokenDI();
   setupTagDI();

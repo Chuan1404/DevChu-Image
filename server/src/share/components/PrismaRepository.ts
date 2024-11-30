@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../configs/prisma";
 import { EModelStatus } from "../enums";
 import { IRepository } from "../interfaces/IRepository";
 import { PagingDTO } from "../types";
@@ -7,11 +7,10 @@ import { convertQuery } from "../utils";
 export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 {
-  private prisma = new PrismaClient();
   constructor(private readonly modelName: string) {}
 
   async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
-    const data = await (this.prisma as any)[this.modelName].findFirst({
+    const data = await (prisma as any)[this.modelName].findFirst({
       where: cond,
     });
 
@@ -23,7 +22,7 @@ export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   }
 
   async find(id: string): Promise<Entity | null> {
-    const data = await (this.prisma as any)[this.modelName].findUnique({
+    const data = await (prisma as any)[this.modelName].findUnique({
       where: { id },
     });
 
@@ -40,9 +39,8 @@ export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
       status: { not: EModelStatus.DELETED },
     };
 
-    const query = convertQuery(condWithStatus)
-
-    const rows = await (this.prisma as any)[this.modelName].findMany({
+    const query = convertQuery(condWithStatus);
+    const rows = await (prisma as any)[this.modelName].findMany({
       where: query,
       skip: paging ? (paging.page - 1) * paging.limit : undefined,
       take: paging ? paging.limit : undefined,
@@ -52,7 +50,7 @@ export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   }
 
   async create(data: Entity): Promise<boolean> {
-    await (this.prisma as any)[this.modelName].create({
+    await (prisma as any)[this.modelName].create({
       data,
     });
 
@@ -60,7 +58,7 @@ export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   }
 
   async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
-    await (this.prisma as any)[this.modelName].update({
+    await (prisma as any)[this.modelName].update({
       where: { id },
       data,
     });
@@ -70,11 +68,11 @@ export class PrismaRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     if (isHard) {
-      await (this.prisma as any)[this.modelName].delete({
+      await (prisma as any)[this.modelName].delete({
         where: { id },
       });
     } else {
-      await (this.prisma as any)[this.modelName].update({
+      await (prisma as any)[this.modelName].update({
         where: { id },
         data: { status: EModelStatus.DELETED },
       });

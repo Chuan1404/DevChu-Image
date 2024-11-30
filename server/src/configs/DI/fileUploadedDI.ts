@@ -1,18 +1,18 @@
 import { container } from "tsyringe";
-import { IFileUploadedRepository } from "../../repositories/interfaces/IFileUploadedRepository";
-import { IFileUploadedService } from "../../services/interfaces/IFileUploadedService";
-import { FileUploadedRepository } from "../../repositories/FileUploadedRepository";
-import { FileUploadedService } from "../../services/FileUploadedService";
-import { FileUploadedController } from "../../controllers/FileUploadedController";
+import { IUploadedFileRepository } from "../../repositories/interfaces/IUploadedFileRepository";
+import { IUploadedFileService } from "../../services/interfaces/IUploadedFileService";
+import { UploadedFileRepository } from "../../repositories/UploadedFileRepository";
+import { UploadedFileService } from "../../services/UploadedFileService";
+import { UploadedFileController } from "../../controllers/UploadedFileController";
 
-export default function setupFileUploadedDI() {
-  container.register<IFileUploadedRepository>("IFileUploadedRepository", {
-    useClass: FileUploadedRepository,
+export default function setupUploadedFileDI() {
+  container.register<IUploadedFileRepository>("IUploadedFileRepository", {
+    useClass: UploadedFileRepository,
   });
-  container.register<IFileUploadedService>("IFileUploadedService", {
-    useClass: FileUploadedService,
+  container.register<IUploadedFileService>("IUploadedFileService", {
+    useClass: UploadedFileService,
   });
-  container.register<FileUploadedController>("FileUploadedController", {
-    useClass: FileUploadedController,
+  container.register<UploadedFileController>("UploadedFileController", {
+    useClass: UploadedFileController,
   });
 }

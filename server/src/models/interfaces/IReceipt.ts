@@ -1,5 +1,5 @@
 import { EModelStatus, EPaymentMethod } from "../../share/enums";
-import { IFileUploaded } from "./IFileUploaded";
+import { IUploadedFile } from "./IUploadedFile";
 import { IUser } from "./IUser";
 
 export const modelName = "Receipt"
@@ -11,7 +11,7 @@ export interface IReceipt {
   methodId?: string;
   status: EModelStatus;
   userId: IUser;
-  fileId: IFileUploaded;
+  fileId: IUploadedFile;
   createdAt: Date;
   updatedAt: Date;
 };

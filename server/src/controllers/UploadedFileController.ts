@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
 import {
-  FileUploadedCondSchema,
-  FileUploadedCreateDTO,
-} from "../models/types/FileUploaded";
-import { IFileUploadedService } from "../services/interfaces/IFileUploadedService";
+  UploadedFileCondSchema,
+  UploadedFileCreateDTO,
+} from "../models/types/UploadedFile";
+import { IUploadedFileService } from "../services/interfaces/IUploadedFileService";
 import { PagingSchema } from "../share/types";
 
 @injectable()
-export class FileUploadedController {
+export class UploadedFileController {
   constructor(
-    @inject("IFileUploadedService")
-    private readonly service: IFileUploadedService
+    @inject("IUploadedFileService")
+    private readonly service: IUploadedFileService
   ) {}
   async checkFile(req: Request, res: Response) {
     try {
@@ -30,7 +30,7 @@ export class FileUploadedController {
 
   async upload(req: Request, res: Response) {
     try {
-      let body: FileUploadedCreateDTO = {
+      let body: UploadedFileCreateDTO = {
         price: Number(req.body.price),
         title: req.body.title,
         userId: "123",
@@ -95,9 +95,9 @@ export class FileUploadedController {
       query.fileType = query.type.split(',')
       delete query.type
     }
-    console.log(query)
+
     // Query repository
-    const cond = FileUploadedCondSchema.parse(query);
+    const cond = UploadedFileCondSchema.parse(query);
     const result = await this.service.findAll(cond, paging);
 
     res.status(200).json({

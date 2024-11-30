@@ -1,5 +1,5 @@
 import { EModelStatus } from "../../share/enums";
-import { IFileUploaded } from "./IFileUploaded";
+import { IUploadedFile } from "./IUploadedFile";
 import { IUser } from "./IUser";
 
 export const modelName = "UserRight"
@@ -7,7 +7,7 @@ export const modelName = "UserRight"
 export interface IUserRight {
   id: string;
   expireDate: Date;
-  fileId: IFileUploaded;
+  fileId: IUploadedFile;
   userId: IUser;
   status: EModelStatus;
   createdAt: Date;

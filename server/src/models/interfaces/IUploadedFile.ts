@@ -1,9 +1,9 @@
 import { EFileType, EModelStatus } from "../../share/enums";
 import { IUser } from "./IUser";
 
-export const modelName = "FileUploaded"
+export const modelName = "UploadedFile"
 
-export interface IFileUploaded {
+export interface IUploadedFile {
   id: string;
   title: string;
   price: number;

@@ -1,7 +1,7 @@
 import { any, array, date, nativeEnum, number, object, string, z } from "zod";
 import { EModelStatus } from "../../share/enums";
 
-export const FileUploadedSchema = z.object({
+export const UploadedFileSchema = z.object({
   id: string(),
   title: string().min(2),
   price: number().min(0),
@@ -21,20 +21,20 @@ export const FileUploadedSchema = z.object({
   updatedAt: date(),
 });
 
-export const FileUploadedCreateSchema = object({
+export const UploadedFileCreateSchema = object({
   title: string().min(2),
   price: number().min(0),
   file: any(),
   userId: string(),
 });
 
-export const FileUploadedUpdateSchema = object({
+export const UploadedFileUpdateSchema = object({
   title: string().min(2).optional(),
   price: number().min(0).optional(),
   status: nativeEnum(EModelStatus).optional(),
 });
 
-export const FileUploadedCondSchema = object({
+export const UploadedFileCondSchema = object({
   id: array(string()).optional(),
   title: string().optional(),
   price: object({
@@ -49,7 +49,7 @@ export const FileUploadedCondSchema = object({
   fileType: array(string()).optional(),
 });
 
-export type FileUploaded = z.infer<typeof FileUploadedSchema>;
-export type FileUploadedCreateDTO = z.infer<typeof FileUploadedCreateSchema>;
-export type FileUploadedUpdateDTO = z.infer<typeof FileUploadedUpdateSchema>;
-export type FileUploadedCondDTO = z.infer<typeof FileUploadedCondSchema>;
+export type UploadedFile = z.infer<typeof UploadedFileSchema>;
+export type UploadedFileCreateDTO = z.infer<typeof UploadedFileCreateSchema>;
+export type UploadedFileUpdateDTO = z.infer<typeof UploadedFileUpdateSchema>;
+export type UploadedFileCondDTO = z.infer<typeof UploadedFileCondSchema>;

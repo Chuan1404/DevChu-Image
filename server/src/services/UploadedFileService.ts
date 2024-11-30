@@ -2,36 +2,36 @@ import sharp from "sharp";
 import { inject, injectable } from "tsyringe";
 import { v7 } from "uuid";
 import {
-  FileUploaded,
-  FileUploadedCondDTO,
-  FileUploadedCreateDTO,
-  FileUploadedCreateSchema,
-  FileUploadedSchema,
-  FileUploadedUpdateDTO,
-  FileUploadedUpdateSchema,
-} from "../models/types/FileUploaded";
-import { IFileUploadedRepository } from "../repositories/interfaces/IFileUploadedRepository";
+  UploadedFile,
+  UploadedFileCondDTO,
+  UploadedFileCreateDTO,
+  UploadedFileCreateSchema,
+  UploadedFileSchema,
+  UploadedFileUpdateDTO,
+  UploadedFileUpdateSchema,
+} from "../models/types/UploadedFile";
+import { IUploadedFileRepository } from "../repositories/interfaces/IUploadedFileRepository";
 import { EFileQuality, EModelStatus, EQualityValue } from "../share/enums";
 import { ErrDataInvalid, ErrDataNotFound } from "../share/errors";
 import { IImageHandler } from "../share/interfaces/IImageHandler";
 import IUploader from "../share/interfaces/IUploader";
 import { PagingDTO } from "../share/types";
-import { IFileUploadedService } from "./interfaces/IFileUploadedService";
+import { IUploadedFileService } from "./interfaces/IUploadedFileService";
 
 @injectable()
-export class FileUploadedService implements IFileUploadedService {
+export class UploadedFileService implements IUploadedFileService {
   constructor(
-    @inject("IFileUploadedRepository")
-    private readonly repository: IFileUploadedRepository,
+    @inject("IUploadedFileRepository")
+    private readonly repository: IUploadedFileRepository,
     @inject("IImageHandler")
     private readonly imageHandler: IImageHandler,
     @inject("IUploader")
     private readonly uploader: IUploader
   ) {}
 
-  async create(data: FileUploadedCreateDTO): Promise<string> {
+  async create(data: UploadedFileCreateDTO): Promise<string> {
     const { success, data: parsedData } =
-      FileUploadedCreateSchema.safeParse(data);
+      UploadedFileCreateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
@@ -40,7 +40,7 @@ export class FileUploadedService implements IFileUploadedService {
     const metadata = await sharp(parsedData.file.buffer).metadata();
 
     let newId = v7();
-    const newData: FileUploaded = {
+    const newData: UploadedFile = {
       id: newId,
       root: "",
       display: "",
@@ -112,12 +112,12 @@ export class FileUploadedService implements IFileUploadedService {
     return newId;
   }
 
-  async update(id: string, data: FileUploadedUpdateDTO): Promise<boolean> {
+  async update(id: string, data: UploadedFileUpdateDTO): Promise<boolean> {
     const {
       success,
       data: parsedData,
       error,
-    } = FileUploadedUpdateSchema.safeParse(data);
+    } = UploadedFileUpdateSchema.safeParse(data);
 
     if (!success) {
       console.log(error);
@@ -133,22 +133,22 @@ export class FileUploadedService implements IFileUploadedService {
     return await this.repository.update(id, parsedData);
   }
 
-  async find(id: string): Promise<FileUploaded> {
+  async find(id: string): Promise<UploadedFile> {
     let data = await this.repository.find(id);
 
     if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
-    return FileUploadedSchema.parse(data);
+    return UploadedFileSchema.parse(data);
   }
 
   async findAll(
-    cond: FileUploadedCondDTO,
+    cond: UploadedFileCondDTO,
     paging: PagingDTO
-  ): Promise<FileUploaded[]> {
+  ): Promise<UploadedFile[]> {
     let data = await this.repository.findAll(cond, paging);
-    return data ? data.map((item) => FileUploadedSchema.parse(item)) : [];
+    return data ? data.map((item) => UploadedFileSchema.parse(item)) : [];
   }
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {

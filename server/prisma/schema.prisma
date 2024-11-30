@@ -19,7 +19,7 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  files             FileUploaded[]
+  files             UploadedFile[]
   comments          Comment[]
   receipts          Receipt[]
   tokens            RefreshToken[]
@@ -29,7 +29,7 @@ model User {
   @@map("users")
 }
 
-model FileUploaded {
+model UploadedFile {
   id        String       @id @map("_id")
   userId    String?      @map("userId")
   title     String?
@@ -51,7 +51,7 @@ model FileUploaded {
   receipts Receipt[]
   rights   UserRight[]
 
-  @@map("fileuploadeds")
+  @@map("uploaded_files")
 }
 
 model Comment {
@@ -64,7 +64,7 @@ model Comment {
   updatedAt DateTime     @updatedAt
 
   user User?         @relation(fields: [userId], references: [id])
-  file FileUploaded? @relation(fields: [fileId], references: [id])
+  file UploadedFile? @relation(fields: [fileId], references: [id])
 
   @@map("comments")
 }
@@ -81,7 +81,7 @@ model Receipt {
   updatedAt  DateTime       @updatedAt
 
   user User?         @relation(fields: [userId], references: [id])
-  file FileUploaded? @relation(fields: [fileId], references: [id])
+  file UploadedFile? @relation(fields: [fileId], references: [id])
 
   @@map("receipts")
 }
@@ -96,7 +96,7 @@ model RefreshToken {
 
   user User? @relation(fields: [userId], references: [id])
 
-  @@map("refreshtokens")
+  @@map("refresh_tokens")
 }
 
 model Tag {
@@ -119,9 +119,9 @@ model UserRight {
   updatedAt  DateTime     @updatedAt
 
   user User         @relation(fields: [userId], references: [id])
-  file FileUploaded @relation(fields: [fileId], references: [id])
+  file UploadedFile @relation(fields: [fileId], references: [id])
 
-  @@map("userrights")
+  @@map("user_rights")
 }
 
 model VerificationCode {
@@ -134,7 +134,7 @@ model VerificationCode {
 
   user User @relation(fields: [userId], references: [id])
 
-  @@map("verificationcodes")
+  @@map("verification_codes")
 }
 
 enum EUserRole {

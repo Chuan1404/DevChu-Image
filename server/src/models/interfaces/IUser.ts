@@ -1,6 +1,6 @@
 import { EAccountStatus, EModelStatus, EUserRole } from "../../share/enums";
 
-export const modelName = "user"
+export const modelName = "User"
 
 export interface IUser {
   id: string;

@@ -1,5 +1,5 @@
 import { EModelStatus } from "../../share/enums";
-import { IFileUploaded } from "./IFileUploaded";
+import { IUploadedFile } from "./IUploadedFile";
 import { IUser } from "./IUser";
 
 export const modelName = "Comment"
@@ -8,7 +8,7 @@ export const modelName = "Comment"
   id: string;
   content: string;
   userId: IUser;
-  fileId: IFileUploaded;
+  fileId: IUploadedFile;
   status: EModelStatus;
   createdAt: Date;
   updatedAt: Date;

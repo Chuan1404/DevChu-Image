@@ -2,7 +2,7 @@ import { Application } from "express";
 import { EUserRole } from "../share/enums";
 import setupAuthRoute from "./authRoute";
 import setupCommentRouter from "./commentRoute";
-import setupFileUploadedRoute from "./fileUploadedRoute";
+import setupUploadedFileRoute from "./uploadedFileRoute";
 import setupTagRoute from "./tagRoute";
 import setupUserRoute from "./userRoute";
 declare global {
@@ -17,7 +17,7 @@ declare global {
 function router(app: Application) {
   app.use("/users", setupUserRoute());
   app.use("/auth", setupAuthRoute());
-  app.use("/files", setupFileUploadedRoute());
+  app.use("/files", setupUploadedFileRoute());
   app.use("/comments", setupCommentRouter());
   app.use("/tags", setupTagRoute());
 }

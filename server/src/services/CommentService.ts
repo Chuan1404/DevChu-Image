@@ -10,7 +10,7 @@ import {
   CommentUpdateSchema,
 } from "../models/types/Comment";
 import { ICommentRepository } from "../repositories/interfaces/ICommentRepository";
-import { IFileUploadedRepository } from "../repositories/interfaces/IFileUploadedRepository";
+import { IUploadedFileRepository } from "../repositories/interfaces/IUploadedFileRepository";
 import { IUserRepository } from "../repositories/interfaces/IUserRepository";
 import { EModelStatus } from "../share/enums";
 import { ErrDataInvalid, ErrDataNotFound } from "../share/errors";
@@ -24,8 +24,8 @@ export class CommentService implements ICommentService {
     private readonly repository: ICommentRepository,
     @inject("IUserRepository")
     private readonly userRepository: IUserRepository,
-    @inject("IFileUploadedRepository")
-    private readonly fileRepository: IFileUploadedRepository
+    @inject("IUploadedFileRepository")
+    private readonly fileRepository: IUploadedFileRepository
   ) {}
 
   async create(data: CommentCreateDTO): Promise<string> {

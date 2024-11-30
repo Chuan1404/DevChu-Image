@@ -1,10 +1,10 @@
 import express from "express";
 import { container } from "tsyringe";
 import { upload } from "../configs/multer";
-import { FileUploadedController } from "../controllers/FileUploadedController";
+import { UploadedFileController } from "../controllers/UploadedFileController";
 
-export default function setupFileUploadedRoute() {
-  const fileController = container.resolve(FileUploadedController);
+export default function setupUploadedFileRoute() {
+  const fileController = container.resolve(UploadedFileController);
   const fileRoute = express.Router();
 
   fileRoute.get("/", fileController.findAll.bind(fileController));
