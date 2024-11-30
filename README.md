@@ -7,17 +7,18 @@ DevChu Image is a web-based platform designed for trading image files. The syste
 ### 1.1. Models
 
 #### Users Table
-| Column        | Data Type                                 | Description                                      |
-|---------------|-------------------------------------------|--------------------------------------------------|
-| id            | CHAR(36)                                  | Primary key (unique identifier)                  |
-| email         | VARCHAR(100)                              | User email (unique)                              |
-| password      | TEXT                                      | User password                                    |
-| name          | VARCHAR(50)                               | User name                                        |
-| avatar        | VARCHAR(255)                              | Avatar URL or path                               |
-| accountStatus | ENUM ('VERIFIED', 'UNVERIFIED', 'BANNED') | User account status                              |
-| role          | ENUM ('ROLE_CUSTOMER', 'ROLE_ADMIN', 'ROLE_EDITOR') | User role                              |
-| createdAt     | TIMESTAMP                                 | Timestamp of creation                            |
-| updatedAt     | TIMESTAMP                                 | Timestamp of last update                         |
+| Column        | Data Type                                 | Description                                      | Index         |
+|---------------|-------------------------------------------|--------------------------------------------------|---------------|
+| id            | CHAR(36)                                  | Primary key (unique identifier)                  | Primary Key   |
+| email         | VARCHAR(100)                              | User email (unique)                              | Unique        |
+| password      | TEXT                                      | User password                                    |               |
+| name          | VARCHAR(50)                               | User name                                        |               |
+| avatar        | VARCHAR(255)                              | Avatar URL or path                               |               |
+| accountStatus | ENUM ('VERIFIED', 'UNVERIFIED', 'BANNED') | User account status                              |               |
+| role          | ENUM ('ROLE_CUSTOMER', 'ROLE_ADMIN', 'ROLE_EDITOR') | User role                               |               |
+| createdAt     | TIMESTAMP                                 | Timestamp of creation                            |               |
+| updatedAt     | TIMESTAMP                                 | Timestamp of last update                         |               |
+
 
 #### Uploaded Files Table
 | Column     | Data Type           | Description                                      |
