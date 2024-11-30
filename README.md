@@ -21,106 +21,113 @@ DevChu Image is a web-based platform designed for trading image files. The syste
 
 
 #### Uploaded Files Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| title      | VARCHAR(100)        | File title (unique)                              |
-| price      | DOUBLE              | File price                                       |
-| root       | VARCHAR(255)        | Path for the root image                          |
-| display    | VARCHAR(255)        | Path for the display image                       |
-| medium     | VARCHAR(255)        | Path for the medium image                        |
-| high       | VARCHAR(255)        | Path for the high-quality image                  |
-| size       | DECIMAL(4, 2)       | File size                                        |
-| width      | SMALLINT UNSIGNED   | Image width                                      |
-| height     | SMALLINT UNSIGNED   | Image height                                     |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | File status                   |
-| file_type  | ENUM ("jpeg", "jpg", "png") | Image file type                          |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
-| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
+| Column     | Data Type           | Description                                      | Index                         |
+|------------|---------------------|--------------------------------------------------|-------------------------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key                   |
+| title      | VARCHAR(100)        | File title (unique)                              | Unique, Fulltext Index (ft_title) |
+| price      | DOUBLE              | File price                                       |                               |
+| root       | VARCHAR(255)        | Path for the root image                          |                               |
+| display    | VARCHAR(255)        | Path for the display image                       |                               |
+| medium     | VARCHAR(255)        | Path for the medium image                        |                               |
+| high       | VARCHAR(255)        | Path for the high-quality image                  |                               |
+| size       | DECIMAL(4, 2)       | File size                                        |                               |
+| width      | SMALLINT UNSIGNED   | Image width                                      |                               |
+| height     | SMALLINT UNSIGNED   | Image height                                     |                               |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | File status      |                               |
+| file_type  | ENUM ("jpeg", "jpg", "png") | Image file type                                |                               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |                               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |                               |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               | Foreign Key                   |
+
 
 #### Comments Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| content    | TEXT                | Comment content                                  |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Comment status   |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
-| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
-| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| content    | TEXT                | Comment content                                  |               |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Comment status   |               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               | Foreign Key   |
+| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      | Foreign Key   |
+
 
 #### Receipts Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| totalPrice | DOUBLE              | Total price of the receipt                       |
-| method     | ENUM ("MOMO", "CASH") | Payment method                                   |
-| methodId   | VARCHAR(100)        | Method-specific identifier                        |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Receipt status   |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
-| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| totalPrice | DOUBLE              | Total price of the receipt                       |               |
+| method     | ENUM ("MOMO", "CASH") | Payment method                                   |               |
+| methodId   | VARCHAR(100)        | Method-specific identifier                        |               |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Receipt status   |               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               | Foreign Key   |
+
 
 #### Receipts Details Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
-| receiptId  | CHAR(36)            | Foreign key referencing `receipts.id`            |
-| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+| receiptId  | CHAR(36)            | Foreign key referencing `receipts.id`            | Foreign Key   |
+| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      | Foreign Key   |
+
 
 #### Refresh Tokens Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| token      | VARCHAR(100)        | Token string                                     |
-| expire_date| DATE                | Token expiration date                            |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Token status        |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
-| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| token      | VARCHAR(100)        | Token string                                     |               |
+| expire_date| DATE                | Token expiration date                            |               |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Token status        |               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               | Foreign Key   |
+
 
 #### Tags Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| name       | VARCHAR(100)        | Tag name                                         |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Tag status       |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| name       | VARCHAR(100)        | Tag name                                         |               |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Tag status       |               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+
 
 #### File-Tag Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      |
-| tagId      | CHAR(36)            | Foreign key referencing `tags.id`                |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      | Foreign Key   |
+| tagId      | CHAR(36)            | Foreign key referencing `tags.id`                | Foreign Key   |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+
 
 #### User rights Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| expire_date| DATE                | Expiration date for user rights                  |
-| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      |
-| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Rights status       |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| expire_date| DATE                | Expiration date for user rights                  |               |
+| fileId     | CHAR(36)            | Foreign key referencing `uploaded_files.id`      | Foreign Key   |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               | Foreign Key   |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Rights status       |               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
+
 
 #### Verification codes Table
-| Column     | Data Type           | Description                                      |
-|------------|---------------------|--------------------------------------------------|
-| id         | CHAR(36)            | Primary key (unique identifier)                  |
-| value      | CHAR(36)            | Verification code value                          |
-| userId     | CHAR(36)            | Foreign key referencing `users.id`               |
-| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Verification code status |
-| createdAt  | TIMESTAMP           | Timestamp of creation                            |
-| updatedAt  | TIMESTAMP           | Timestamp of last update                         |
-
+| Column     | Data Type           | Description                                      | Index         |
+|------------|---------------------|--------------------------------------------------|---------------|
+| id         | CHAR(36)            | Primary key (unique identifier)                  | Primary Key   |
+| value      | CHAR(36)            | Verification code value                          |               |
+| userId     | CHAR(36)            | Foreign key referencing `users.id`               | Foreign Key   |
+| status     | ENUM ("ACTIVE", "INACTIVE", "DELETED") | Verification code status |               |
+| createdAt  | TIMESTAMP           | Timestamp of creation                            |               |
+| updatedAt  | TIMESTAMP           | Timestamp of last update                         |               |
 
 ---
 
