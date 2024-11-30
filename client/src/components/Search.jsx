@@ -8,11 +8,11 @@ import { setOptions } from "../store/slices/searchSlice";
 
 const Search = ({ bgColor = "transparent", ...props }) => {
   const options = useSelector((store) => store.search.options);
-  const [kw, setKw] = useState(options.kw);
+  const [title, setTitle] = useState(options.title);
   const [isShow, setIsShow] = useState(false);
   const { data: tags, fetching: isLoading } = useQuery(
-    () => tagService.getByKw(kw),
-    [kw]
+    () => tagService.getByKw(title),
+    [title]
   );
   const dispatcher = useDispatch();
 
@@ -20,27 +20,26 @@ const Search = ({ bgColor = "transparent", ...props }) => {
 
   const handleSearch = (value = null) => {
     if (value != null) dispatcher(setOptions({ ...value }));
-    else dispatcher(setOptions({ ...options, kw: kw }));
+    else dispatcher(setOptions({ ...options, title: title }));
 
-    setIsShow(false)
+    setIsShow(false);
   };
 
   const handleClear = () => {
-    setKw('')
-    inputRef.current.focus()
-  }
+    setTitle("");
+    inputRef.current.focus();
+  };
 
   const windowClick = (e) => {
-    if(e.target != inputRef.current && isShow)
-      setIsShow(false)
-  }
+    if (e.target != inputRef.current && isShow) setIsShow(false);
+  };
   useEffect(() => {
-    window.addEventListener('click', windowClick)
+    window.addEventListener("click", windowClick);
 
     return () => {
-      window.removeEventListener('click', windowClick)
-    }
-  })
+      window.removeEventListener("click", windowClick);
+    };
+  });
 
   return (
     <Box className={`search ${isShow && "isDropDown"}`}>
@@ -48,15 +47,15 @@ const Search = ({ bgColor = "transparent", ...props }) => {
         <input
           onFocus={() => setIsShow(true)}
           ref={inputRef}
-          value={kw}
+          value={title}
           onKeyDown={(e) => {
             e.key == "Enter" && handleSearch();
           }}
-          onChange={(e) => setKw(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           placeholder="Keyword"
         />
         <Box className="search__close">
-          <Close onClick={handleClear}/>
+          <Close onClick={handleClear} />
         </Box>
         <Box className="search__icon">
           <ImageOutlined />
@@ -70,9 +69,9 @@ const Search = ({ bgColor = "transparent", ...props }) => {
               key={index}
               className="search__dropdown--item"
               onClick={() => {
-                handleSearch({ ...options, kw: tag })
-                setIsShow(false)
-                setKw(tag)
+                handleSearch({ ...options, title: tag });
+                setIsShow(false);
+                setTitle(tag);
               }}
             >
               {tag}

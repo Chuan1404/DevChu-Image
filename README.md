@@ -4,6 +4,21 @@
 
 DevChu Image is a web-based platform designed for trading image files. The system is built with **ReactJS** for the frontend and **Node.js** with **TypeScript** for the backend, utilizing **ExpressJS** and **MongoDB** for data storage. It follows a layered architecture, applying Object-Oriented Programming (OOP) techniques and adhering to SOLID principles for maintainable and scalable development.
 
+### 1.1. Models
+
+#### user
+| Column        | Data Type                                 | Description                                      |
+|---------------|-------------------------------------------|--------------------------------------------------|
+| id            | CHAR(36)                                  | Primary key (unique identifier)                  |
+| email         | VARCHAR(100)                              | User email (unique)                              |
+| password      | TEXT                                      | User password                                    |
+| name          | VARCHAR(50)                               | User name                                        |
+| avatar        | VARCHAR(255)                              | Avatar URL or path                               |
+| accountStatus | ENUM ('VERIFIED', 'UNVERIFIED', 'BANNED') | User account status                              |
+| role          | ENUM ('ROLE_CUSTOMER', 'ROLE_ADMIN', 'ROLE_EDITOR') | User role                              |
+| createdAt     | TIMESTAMP                                 | Timestamp of creation                            |
+| updatedAt     | TIMESTAMP                                 | Timestamp of last update                         |
+
 ---
 
 ## 2. Features

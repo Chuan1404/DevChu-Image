@@ -34,8 +34,8 @@ export default function Home() {
     (async () => {
       setIsLoading(true);
 
-      let query = `?${queryLocation.toString(options)}`;
-      let res = await fileService.getFiles(query);
+      const query = `?${queryLocation.toString(options)}`;
+      const res = await fileService.getFiles(query);
       if (!res.error) {
         setData(res.data);
       }

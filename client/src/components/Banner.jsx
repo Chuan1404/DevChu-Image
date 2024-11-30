@@ -28,10 +28,7 @@ export default function Banner({ image }) {
         >
           Welcome to our website
         </Typography>
-        <Search
-          bgColor="white"
-          width={"50%"}
-        />
+        <Search bgColor="white" width={"50%"} />
       </Stack>
       {/* <img className="position-center" src={image ? image : myImage} alt="" /> */}
     </Box>

@@ -3,7 +3,7 @@ import { FILE_TYPES } from "../../assets/js/constants";
 
 const initialState = {
   options: {
-    kw: "",
+    title: "",
     page: 1,
     type: Object.values(FILE_TYPES)
   },

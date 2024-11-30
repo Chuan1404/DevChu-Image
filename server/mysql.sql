@@ -32,6 +32,9 @@ CREATE TABLE uploaded_files (
     CONSTRAINT fk_file_user FOREIGN KEY (userId) REFERENCES users (id)
 );
 
+ALTER TABLE uploaded_files
+ADD FULLTEXT INDEX ft_title (title);
+
 CREATE TABLE comments (
     id CHAR(36) PRIMARY KEY NOT NULL,
     content TEXT NOT NULL,
