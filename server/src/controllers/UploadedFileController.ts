@@ -29,23 +29,33 @@ export class UploadedFileController {
   }
 
   async search(req: Request, res: Response) {
-    const { success, data: paging, error } = PagingSchema.safeParse(req.query);
+    try {
+      const {
+        success,
+        data: paging,
+        error,
+      } = PagingSchema.safeParse(req.query);
 
-    if (!success) {
-      res.status(400).json({
-        error: error.message,
+      if (!success) {
+        res.status(400).json({
+          error: error.message,
+        });
+        return;
+      }
+
+      const kw: string = req.query.kw as string;
+
+      // Query repository
+      const result = await this.service.search(kw, paging);
+      res.status(200).json({
+        data: result,
+        paging,
       });
-      return;
+    } catch (error) {
+      res.status(400).json({
+        error,
+      });
     }
-
-    const kw: string = req.query.kw as string
-
-    // Query repository
-    const result = await this.service.search(kw, paging);
-    res.status(200).json({
-      data: result,
-      paging,
-    });
   }
 
   async upload(req: Request, res: Response) {
@@ -101,7 +111,7 @@ export class UploadedFileController {
 
     // Validate query
     const query: any = { ...req.query };
-    
+
     if (query.min || query.max) {
       query.price = {
         ...(query.min && { gte: Number(query.min) }),
@@ -111,9 +121,9 @@ export class UploadedFileController {
       delete query.max;
     }
 
-    if(query.type) {
-      query.fileType = query.type.split(',')
-      delete query.type
+    if (query.type) {
+      query.fileType = query.type.split(",");
+      delete query.type;
     }
 
     // Query repository
